@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivi Missions Vacations</title>
+    <title>Suivi Vacations — V3 Pilotage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Firebase SDK Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -58,6 +58,7 @@
         </div>
         
         <nav class="hidden md:flex space-x-1.5 bg-gray-50 p-1.5 rounded-xl border border-gray-200">
+            <button onclick="changerOnglet('pilotage')" id="tab-pilotage" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Pilotage</button>
             <button onclick="changerOnglet('planning')" id="tab-planning" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 transition cursor-pointer">Planning</button>
             <button onclick="changerOnglet('recap')" id="tab-recap" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Récap</button>
             <button onclick="changerOnglet('documents')" id="tab-documents" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Documents</button>
@@ -80,7 +81,8 @@
     </header>
 
     <!-- Navigation Smartphone -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-2 flex justify-around items-center z-40 shadow-xl">
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-1 py-2 flex justify-around items-center z-40 shadow-xl">
+        <button onclick="changerOnglet('pilotage')" id="m-tab-pilotage" class="flex flex-col items-center text-gray-400 font-medium text-[10px] space-y-1 relative"><span class="text-lg">📊</span><span>Pilotage</span></button>
         <button onclick="changerOnglet('planning')" id="m-tab-planning" class="flex flex-col items-center text-blue-600 font-semibold text-[11px] space-y-1 relative"><span class="text-xl">📅</span><span>Planning</span></button>
         <button onclick="changerOnglet('recap')" id="m-tab-recap" class="flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📊</span><span>Récap</span></button>
         <button onclick="changerOnglet('documents')" id="m-tab-documents" class="flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📁</span><span>Docs</span></button>
@@ -90,6 +92,55 @@
 
     <div class="max-w-6xl mx-auto px-4 md:px-6 pb-16">
         
+        <!-- ONGLET PILOTAGE : NOUVELLES FONCTIONNALITÉS -->
+        <div id="contenu-pilotage" class="space-y-8">
+            <div>
+                <h2 class="text-2xl font-extrabold text-gray-800">📊 Pilotage annuel</h2>
+                <p class="text-gray-500 text-sm mt-1">Vue globale de votre activité, de vos kilomètres, de vos frais et de vos encaissements.</p>
+            </div>
+            <div class="bg-white p-5 md:p-7 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Année analysée</label>
+                    <select id="pilotage-annee" onchange="genererPilotage()" class="border border-gray-300 rounded-xl p-2.5 text-sm bg-white"></select>
+                </div>
+                <button onclick="genererBilanAnnuel()" class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer">🖨️ Bilan annuel imprimable</button>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 font-semibold uppercase">CA brut</p><p id="pilot-ca" class="text-2xl font-extrabold text-blue-600 mt-2">0,00 €</p></div>
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 font-semibold uppercase">Heures</p><p id="pilot-heures" class="text-2xl font-extrabold text-gray-800 mt-2">0,0 h</p></div>
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 font-semibold uppercase">Kilomètres</p><p id="pilot-km" class="text-2xl font-extrabold text-gray-800 mt-2">0 km</p></div>
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 font-semibold uppercase">Reste à encaisser</p><p id="pilot-reste" class="text-2xl font-extrabold text-orange-600 mt-2">0,00 €</p></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-gray-800">📅 Activité mensuelle</h3><span class="text-xs text-gray-400">CA / km</span></div>
+                    <div id="pilot-mensuel" class="space-y-2"></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-gray-800">🏢 CA par établissement</h3></div>
+                    <div id="pilot-etablissements" class="space-y-2"></div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                <div class="flex justify-between items-center mb-4"><div><h3 class="font-bold text-gray-800">🚗 Kilométrage fiscal</h3><p class="text-xs text-gray-500 mt-1">Total mensuel et annuel des kilomètres saisis dans les vacations.</p></div></div>
+                <div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b text-left text-xs text-gray-500"><th class="p-2">Mois</th><th class="p-2">Km</th><th class="p-2">Vacations</th><th class="p-2">Véhicule principal</th></tr></thead><tbody id="pilot-km-table"></tbody></table></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-gray-800">⛽ / 💳 Frais professionnels</h3><button onclick="ajouterFraisRapide()" class="bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-medium cursor-pointer">+ Ajouter</button></div>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div><p class="text-xs text-gray-500">Total frais</p><p id="pilot-frais" class="text-xl font-bold text-orange-600">0,00 €</p></div>
+                        <div><p class="text-xs text-gray-500">Résultat après frais</p><p id="pilot-resultat" class="text-xl font-bold text-emerald-600">0,00 €</p></div>
+                    </div>
+                    <div id="liste-frais-pilotage" class="space-y-2"></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-gray-800">🧾 Facturation</h3><button onclick="genererFactureRapide()" class="bg-gray-900 text-white px-3 py-2 rounded-xl text-xs font-medium cursor-pointer">+ Créer facture</button></div>
+                    <div id="liste-factures-pilotage" class="space-y-2"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- ONGLET 1 : PLANNING -->
         <div id="contenu-planning" class="space-y-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -584,10 +635,11 @@
         if (auth) {
             auth.onAuthStateChanged((user) => {
                 let overlay = document.getElementById('auth-overlay');
+                chaineSauvegarde = Promise.resolve();
                 if (user) {
                     utilisateurActifId = user.uid;
                     if (overlay) overlay.classList.add('hidden');
-                    chargerDonneesCloud();
+                    chargerDonneesCloud(user.uid);
                 } else {
                     utilisateurActifId = null;
                     if (overlay) overlay.classList.remove('hidden');
@@ -622,6 +674,11 @@
             if (auth) auth.signOut();
         }
 
+        // Les bulletins sont isolés par utilisateur dans IndexedDB.
+        function cleBulletinUtilisateur(cle) {
+            return `${utilisateurActifId || "local"}::${cle}`;
+        }
+
         // --- GESTION INDEXEDDB POUR LES BULLETINS LOCAUX ---
         function ouvrirIndexedDB() {
             return new Promise((resolve, reject) => {
@@ -643,7 +700,7 @@
                 return new Promise((resolve, reject) => {
                     let tx = db.transaction("bulletins", "readwrite");
                     let store = tx.objectStore("bulletins");
-                    store.put(base64Data, cle);
+                    store.put(base64Data, cleBulletinUtilisateur(cle));
                     tx.oncomplete = () => resolve(true);
                     tx.onerror = () => reject(tx.error);
                 });
@@ -656,7 +713,7 @@
                 return new Promise((resolve, reject) => {
                     let tx = db.transaction("bulletins", "readonly");
                     let store = tx.objectStore("bulletins");
-                    let req = store.get(cle);
+                    let req = store.get(cleBulletinUtilisateur(cle));
                     req.onsuccess = () => resolve(req.result);
                     req.onerror = () => reject(req.error);
                 });
@@ -669,7 +726,7 @@
                 return new Promise((resolve, reject) => {
                     let tx = db.transaction("bulletins", "readwrite");
                     let store = tx.objectStore("bulletins");
-                    store.delete(cle);
+                    store.delete(cleBulletinUtilisateur(cle));
                     tx.oncomplete = () => resolve(true);
                     tx.onerror = () => reject(tx.error);
                 });
@@ -690,6 +747,37 @@
         let vehicules = [];
         let etablissements = [];
         let missions = [];
+        let frais = [];
+        let factures = [];
+
+        // --- V2 : fiabilisation des sauvegardes ---
+        let chaineSauvegarde = Promise.resolve();
+        let derniereSauvegardeLocale = null;
+
+        function creerHorodatageSauvegarde() {
+            return new Date().toISOString();
+        }
+
+        function afficherStatutSauvegarde(message, classe = "text-sm text-gray-600 font-medium") {
+            const el = document.getElementById('statut-firebase');
+            if (el) { el.innerText = message; el.className = classe; }
+        }
+
+        function normaliserTableauxDonnees(data) {
+            return {
+                vehicules: Array.isArray(data?.vehicules) ? data.vehicules : [],
+                etablissements: Array.isArray(data?.etablissements) ? data.etablissements : [],
+                missions: Array.isArray(data?.missions) ? data.missions : [],
+                frais: Array.isArray(data?.frais) ? data.frais : [],
+                factures: Array.isArray(data?.factures) ? data.factures : []
+            };
+        }
+
+        function dateLocaleISO() {
+            const d = new Date();
+            const offset = d.getTimezoneOffset();
+            return new Date(d.getTime() - offset * 60000).toISOString().slice(0, 10);
+        }
 
         function initialiserDatesExportParDefaut() {
             let aujourdhui = new Date();
@@ -702,66 +790,117 @@
         }
 
         function sauvegarderDonneesCloud() {
-            if (!utilisateurActifId) return;
+            if (!utilisateurActifId) return Promise.resolve(false);
+
+            const horodatage = creerHorodatageSauvegarde();
+            derniereSauvegardeLocale = horodatage;
+            const snapshot = JSON.parse(JSON.stringify({ missions, vehicules, etablissements, frais, factures }));
+
             try {
-                localStorage.setItem("suivi_vacations_cache_" + utilisateurActifId, JSON.stringify({ missions, vehicules, etablissements }));
-            } catch(e) {}
-
-            if (db) {
-                let donneesPropres = JSON.parse(JSON.stringify({
-                    vehicules: vehicules,
-                    etablissements: etablissements,
-                    missions: missions,
-                    derniereMiseAJour: new Date().toISOString()
-                }));
-
-                db.collection("utilisateurs").doc(utilisateurActifId).set(donneesPropres).then(() => {
-                    let statutEl = document.getElementById('statut-firebase');
-                    if (statutEl) {
-                        statutEl.innerText = "🟢 Connecté et synchronisé avec Firebase Cloud avec succès !";
-                        statutEl.className = "text-sm text-green-600 font-medium";
-                    }
-                }).catch(err => {
-                    let statutEl = document.getElementById('statut-firebase');
-                    if (statutEl) {
-                        statutEl.innerText = "❌ Erreur Firebase Cloud.";
-                        statutEl.className = "text-sm text-red-600 font-medium";
-                    }
-                });
+                localStorage.setItem(
+                    "suivi_vacations_cache_" + utilisateurActifId,
+                    JSON.stringify({ ...snapshot, derniereMiseAJour: horodatage })
+                );
+            } catch (e) {
+                console.warn("Cache local indisponible :", e);
             }
+
+            if (!db) {
+                afficherStatutSauvegarde("🟡 Enregistré localement (Cloud indisponible)", "text-sm text-amber-600 font-medium");
+                return Promise.resolve(true);
+            }
+
+            // Les écritures sont mises en file : deux clics ou deux actions rapides
+            // ne peuvent plus se terminer dans le mauvais ordre.
+            const uidCible = utilisateurActifId;
+            chaineSauvegarde = chaineSauvegarde.then(() => {
+                // Une écriture mise en file ne doit jamais partir vers un autre compte
+                // si l'utilisateur s'est déconnecté/reconnecté entre-temps.
+                if (!uidCible || uidCible !== utilisateurActifId) return false;
+                const donneesPropres = { ...snapshot, derniereMiseAJour: horodatage };
+                return db.collection("utilisateurs").doc(uidCible).set(donneesPropres)
+                    .then(() => {
+                        if (uidCible === utilisateurActifId) {
+                            afficherStatutSauvegarde("🟢 Données enregistrées et synchronisées", "text-sm text-green-600 font-medium");
+                        }
+                        return true;
+                    })
+                    .catch(err => {
+                        console.error("Erreur Firebase Cloud :", err);
+                        if (uidCible === utilisateurActifId) {
+                            afficherStatutSauvegarde("🟠 Enregistré localement — synchronisation Cloud en attente", "text-sm text-amber-600 font-medium");
+                        }
+                        return false;
+                    });
+            });
+            return chaineSauvegarde;
         }
 
-        function chargerDonneesCloud() {
-            if (!utilisateurActifId) return;
+        function chargerDonneesCloud(uidLecture = utilisateurActifId) {
+            if (!uidLecture || uidLecture !== utilisateurActifId) return;
+
+            let cache = null;
             try {
-                let cached = localStorage.getItem("suivi_vacations_cache_" + utilisateurActifId);
+                const cached = localStorage.getItem("suivi_vacations_cache_" + uidLecture);
                 if (cached) {
-                    let data = JSON.parse(cached);
-                    if (data.vehicules) vehicules = data.vehicules;
-                    if (data.etablissements) etablissements = data.etablissements;
-                    if (data.missions) missions = data.missions;
+                    const parsed = JSON.parse(cached);
+                    cache = { ...normaliserTableauxDonnees(parsed), derniereMiseAJour: parsed.derniereMiseAJour || null };
+                    vehicules = cache.vehicules;
+                    etablissements = cache.etablissements;
+                    missions = cache.missions;
+                    frais = cache.frais;
+                    factures = cache.factures;
+                    derniereSauvegardeLocale = cache.derniereMiseAJour;
                     mettreAJourApplication();
                 }
-            } catch(e) {}
+            } catch (e) {
+                console.warn("Cache local invalide :", e);
+            }
 
-            if (!db) return;
+            if (!db) {
+                afficherStatutSauvegarde("🟡 Données chargées depuis le stockage local", "text-sm text-amber-600 font-medium");
+                return;
+            }
 
-            db.collection("utilisateurs").doc(utilisateurActifId).get().then((doc) => {
-                let statutEl = document.getElementById('statut-firebase');
-                if (doc.exists) {
-                    let data = doc.data();
-                    if (data.vehicules) vehicules = data.vehicules;
-                    if (data.etablissements) etablissements = data.etablissements;
-                    if (data.missions) missions = data.missions;
-                    if (statutEl) {
-                        statutEl.innerText = "🟢 Connecté et synchronisé avec Firebase Cloud avec succès !";
-                        statutEl.className = "text-sm text-green-600 font-medium";
-                    }
-                    mettreAJourApplication();
-                } else {
+            db.collection("utilisateurs").doc(uidLecture).get().then((doc) => {
+                if (!doc.exists) {
+                    if (cache && cache.derniereMiseAJour) sauvegarderDonneesCloud();
+                    else sauvegarderDonneesCloud();
+                    return;
+                }
+
+                if (uidLecture !== utilisateurActifId) return;
+                const data = doc.data() || {};
+                const dateCloud = data.derniereMiseAJour ? new Date(data.derniereMiseAJour).getTime() : 0;
+                const dateCache = cache?.derniereMiseAJour ? new Date(cache.derniereMiseAJour).getTime() : 0;
+
+                // Le cache local plus récent ne doit pas être écrasé par une ancienne copie Cloud.
+                if (dateCache > dateCloud) {
+                    afficherStatutSauvegarde("🟠 Version locale plus récente — synchronisation Cloud", "text-sm text-amber-600 font-medium");
                     sauvegarderDonneesCloud();
+                    return;
                 }
-            }).catch((error) => {});
+
+                const normalisees = normaliserTableauxDonnees(data);
+                vehicules = normalisees.vehicules;
+                etablissements = normalisees.etablissements;
+                missions = normalisees.missions;
+                frais = normalisees.frais;
+                factures = normalisees.factures;
+                derniereSauvegardeLocale = data.derniereMiseAJour || null;
+                try {
+                    localStorage.setItem(
+                        "suivi_vacations_cache_" + uidLecture,
+                        JSON.stringify({ ...normalisees, derniereMiseAJour: data.derniereMiseAJour || creerHorodatageSauvegarde() })
+                    );
+                } catch (e) {}
+                afficherStatutSauvegarde("🟢 Données Cloud chargées et vérifiées", "text-sm text-green-600 font-medium");
+                mettreAJourApplication();
+            }).catch((error) => {
+                console.error("Erreur de lecture Firebase :", error);
+                if (cache) afficherStatutSauvegarde("🟠 Mode local — lecture Cloud impossible", "text-sm text-amber-600 font-medium");
+                else afficherStatutSauvegarde("❌ Impossible de charger les données", "text-sm text-red-600 font-medium");
+            });
         }
 
         function telechargerFichierSauvegarde() {
@@ -777,9 +916,11 @@
             reader.onload = function(e) {
                 try {
                     let parsed = JSON.parse(e.target.result);
-                    if (parsed.missions && parsed.vehicules && parsed.etablissements) {
-                        missions = parsed.missions; vehicules = parsed.vehicules; etablissements = parsed.etablissements;
+                    if (Array.isArray(parsed.missions) && Array.isArray(parsed.vehicules) && Array.isArray(parsed.etablissements)) {
+                        missions = parsed.missions; vehicules = parsed.vehicules; etablissements = parsed.etablissements; frais = Array.isArray(parsed.frais) ? parsed.frais : []; factures = Array.isArray(parsed.factures) ? parsed.factures : [];
                         sauvegarderDonneesCloud(); mettreAJourApplication(); alert("Import complet réussi et synchronisé sur le Cloud !");
+                    } else {
+                        alert("Le fichier ne correspond pas à une sauvegarde Suivi Vacations valide.");
                     }
                 } catch(err) { alert("Erreur de fichier."); }
             };
@@ -804,6 +945,8 @@
                         importedMissions.forEach(im => {
                             let existe = missions.some(m => m.id === im.id || (m.date === im.date && m.lieu === im.lieu && m.heureDebut === im.heureDebut));
                             if (!existe) {
+                                const conflitId = missions.some(m => m.id === im.id);
+                                if (conflitId) im = { ...im, id: missions.length > 0 ? Math.max(...missions.map(m => Number(m.id) || 0)) + 1 : 1 };
                                 missions.push(im);
                                 ajoutees++;
                             }
@@ -1144,7 +1287,10 @@
                 let base64Data = await recupererBulletinLocal(m.bulletinFichier);
                 if (base64Data) {
                     let parts = base64Data.split(',');
-                    zip.folder(m.lieu).file(`${m.date}_Bulletin.jpg`, parts.length > 1 ? parts[1] : parts[0], {base64: true});
+                    const mime = (parts[0].match(/^data:([^;]+);base64$/) || [])[1] || 'application/octet-stream';
+                    const extensions = { 'application/pdf': 'pdf', 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+                    const extension = extensions[mime] || 'bin';
+                    zip.folder(m.lieu).file(`${m.date}_Bulletin.${extension}`, parts.length > 1 ? parts[1] : parts[0], {base64: true});
                 }
             }
             let content = await zip.generateAsync({type: "blob"});
@@ -1157,7 +1303,7 @@
             let idx = parseInt(document.getElementById('input-index').value);
             if (idx < 0) return;
             indexMissionADupliquer = idx;
-            document.getElementById('input-date-duplication').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('input-date-duplication').value = dateLocaleISO();
             fermerModal(); document.getElementById('modal-duplication').classList.remove('hidden');
         }
         function fermerModalDuplication() { document.getElementById('modal-duplication').classList.add('hidden'); }
@@ -1182,7 +1328,8 @@
             let [hF, mF] = fin.split(':').map(Number);
             let mDebut = hD * 60 + mD, mFin = hF * 60 + mF;
             if (mFin <= mDebut) mFin += 24 * 60;
-            let totalMinutesTravail = (mFin - mDebut) - (pause * 60);
+            let dureeBruteMinutes = mFin - mDebut;
+            let totalMinutesTravail = Math.max(0, dureeBruteMinutes - (pause * 60));
             let minNuit = 0;
             for (let m = mDebut; m < mFin - (pause * 60); m++) {
                 let hC = (Math.floor(m / 60)) % 24;
@@ -1203,9 +1350,9 @@
             let [hF, mF] = (m.heureFin || '17:00').split(':').map(Number);
             let mDebut = hD * 60 + mD, mFin = hF * 60 + mF;
             if (mFin <= mDebut) mFin += 24 * 60;
-            let mTravail = (mFin - mDebut) - ((m.pause || 0) * 60);
+            let mTravail = Math.max(0, (mFin - mDebut) - ((m.pause || 0) * 60));
             let minNuit = 0;
-            for (let min = mDebut; min < mFin - ((m.pause || 0) * 60); min++) {
+            for (let min = mDebut; min < mDebut + mTravail; min++) {
                 let hC = (Math.floor(min / 60)) % 24;
                 if (hC >= 21 || hC < 6) minNuit++;
             }
@@ -1254,9 +1401,66 @@
             return v ? (m.distance * v.conso * v.prix) / 100 : 0;
         }
 
+        function formatEuro(v) { return Number(v || 0).toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €'; }
+        function moisNomCourt(i) { return ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'][i]; }
+        function obtenirAnneePilotage() { return parseInt(document.getElementById('pilotage-annee')?.value) || new Date().getFullYear(); }
+        function genererPilotage() {
+            const sel = document.getElementById('pilotage-annee'); if (!sel) return;
+            const annees = new Set([new Date().getFullYear()]);
+            missions.forEach(m => { const a = parseInt((m.date||'').slice(0,4)); if (a) annees.add(a); });
+            frais.forEach(f => { const a = parseInt((f.date||'').slice(0,4)); if (a) annees.add(a); });
+            const actuel = parseInt(sel.value); sel.innerHTML = [...annees].sort((a,b)=>b-a).map(a=>`<option value="${a}">${a}</option>`).join('');
+            sel.value = annees.has(actuel) ? actuel : Math.max(...annees);
+            const annee = obtenirAnneePilotage();
+            const ms = missions.filter(m => (m.date||'').startsWith(String(annee)));
+            const fs = frais.filter(f => (f.date||'').startsWith(String(annee)));
+            const ca = ms.reduce((s,m)=>s+calculerMontantMission(m),0);
+            const percu = ms.reduce((s,m)=>{ const montant=calculerMontantMission(m); return s + (m.statut==='green'?montant:(m.statut==='orange'?montant/2:0)); },0);
+            const km = ms.reduce((s,m)=>s+(Number(m.distance)||0),0);
+            const heures = ms.reduce((s,m)=>s+calculerHeuresMission(m),0);
+            const fraisTotal = fs.reduce((s,f)=>s+(Number(f.montant)||0),0) + ms.reduce((s,m)=>s+calculerCoutCarburantMission(m),0);
+            document.getElementById('pilot-ca').innerText=formatEuro(ca);
+            document.getElementById('pilot-heures').innerText=heures.toFixed(1)+' h';
+            document.getElementById('pilot-km').innerText=km.toLocaleString('fr-FR')+' km';
+            document.getElementById('pilot-reste').innerText=formatEuro(Math.max(0,ca-percu));
+            document.getElementById('pilot-frais').innerText=formatEuro(fraisTotal);
+            document.getElementById('pilot-resultat').innerText=formatEuro(Math.max(0,ca-fraisTotal));
+            const mensuel=document.getElementById('pilot-mensuel'); mensuel.innerHTML='';
+            const kmTable=document.getElementById('pilot-km-table'); kmTable.innerHTML='';
+            for(let i=0;i<12;i++){
+                const arr=ms.filter(m=>{const d=new Date(m.date+'T00:00:00'); return d.getMonth()===i;});
+                const mca=arr.reduce((s,m)=>s+calculerMontantMission(m),0), mkm=arr.reduce((s,m)=>s+(Number(m.distance)||0),0);
+                mensuel.innerHTML += `<div class="flex items-center gap-3 text-xs"><span class="w-9 font-semibold text-gray-500">${moisNomCourt(i)}</span><div class="flex-1 bg-gray-100 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full" style="width:${ca?Math.min(100,(mca/ca)*100):0}%"></div></div><span class="w-24 text-right font-semibold">${formatEuro(mca)}</span></div>`;
+                const vehCounts={}; arr.forEach(m=>{if(m.vehiculeId!=null) vehCounts[m.vehiculeId]=(vehCounts[m.vehiculeId]||0)+1;}); const principal=Object.entries(vehCounts).sort((a,b)=>b[1]-a[1])[0]; const veh=principal?vehicules.find(v=>String(v.id)===String(principal[0])):null;
+                kmTable.innerHTML += `<tr class="border-b last:border-0"><td class="p-2 font-medium">${['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'][i]}</td><td class="p-2">${mkm.toLocaleString('fr-FR')} km</td><td class="p-2">${arr.length}</td><td class="p-2 text-gray-500">${veh?veh.nom:'—'}</td></tr>`;
+            }
+            const parE={}; ms.forEach(m=>parE[m.lieu||'Mission']=(parE[m.lieu||'Mission']||0)+calculerMontantMission(m));
+            const pe=document.getElementById('pilot-etablissements'); pe.innerHTML=Object.entries(parE).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<div class="flex justify-between items-center border-b last:border-0 py-2 text-sm"><span class="font-medium truncate pr-3">${n}</span><span class="font-bold text-blue-600">${formatEuro(v)}</span></div>`).join('') || '<p class="text-sm text-gray-400">Aucune vacation.</p>';
+            const lf=document.getElementById('liste-frais-pilotage'); lf.innerHTML=fs.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,8).map(f=>`<div class="flex justify-between items-center bg-gray-50 rounded-xl px-3 py-2 text-xs"><div><b>${f.libelle}</b><span class="text-gray-400 ml-2">${f.date}</span></div><span class="font-bold text-orange-600">-${formatEuro(f.montant)}</span></div>`).join('') || '<p class="text-xs text-gray-400">Aucun frais ajouté.</p>';
+            const anFact=factures.filter(f=>String(f.date||'').startsWith(String(annee))); const li=document.getElementById('liste-factures-pilotage'); li.innerHTML=anFact.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,8).map(f=>`<div class="flex justify-between items-center bg-gray-50 rounded-xl px-3 py-2 text-xs"><div><b>${f.numero}</b><span class="text-gray-500 ml-2">${f.etablissement}</span></div><span class="font-bold">${formatEuro(f.montant)}</span></div>`).join('') || '<p class="text-xs text-gray-400">Aucune facture enregistrée.</p>';
+        }
+        function ajouterFraisRapide(){
+            const date=prompt('Date du frais (AAAA-MM-JJ) :',dateLocaleISO()); if(!date) return;
+            const libelle=prompt('Libellé du frais :','Frais professionnel'); if(!libelle) return;
+            const montant=parseFloat(prompt('Montant (€) :','0')||'0'); if(!(montant>=0)) return alert('Montant invalide.');
+            frais.push({id:Date.now(),date,libelle,montant}); sauvegarderDonneesCloud(); genererPilotage();
+        }
+        function genererFactureRapide(){
+            const annee=obtenirAnneePilotage(); const etab=prompt('Établissement à facturer :'); if(!etab) return;
+            const ms=missions.filter(m=>(m.date||'').startsWith(String(annee)) && (m.lieu||'').toLowerCase()===etab.toLowerCase());
+            if(!ms.length) return alert('Aucune vacation trouvée pour cet établissement cette année.');
+            const montant=ms.reduce((s,m)=>s+calculerMontantMission(m),0); const seq=factures.filter(f=>String(f.date||'').startsWith(String(annee))).length+1;
+            const numero=`${annee}-FAC-${String(seq).padStart(3,'0')}`; factures.push({id:Date.now(),numero,date:dateLocaleISO(),etablissement:etab,montant,statut:'brouillon'}); sauvegarderDonneesCloud(); genererPilotage();
+            const w=window.open('','_blank'); if(w){w.document.write(`<html><head><title>${numero}</title></head><body style="font-family:Arial;padding:40px"><h1>Facture ${numero}</h1><p>Établissement : ${etab}</p><p>Période : année ${annee}</p><h2>Total : ${formatEuro(montant)}</h2><p>Générée depuis Suivi Vacations.</p><script>window.print()<\\/script></body></html>`);w.document.close();}
+        }
+        function genererBilanAnnuel(){
+            const annee=obtenirAnneePilotage(); const ms=missions.filter(m=>(m.date||'').startsWith(String(annee))); const ca=ms.reduce((s,m)=>s+calculerMontantMission(m),0); const h=ms.reduce((s,m)=>s+calculerHeuresMission(m),0); const km=ms.reduce((s,m)=>s+(Number(m.distance)||0),0); const carbu=ms.reduce((s,m)=>s+calculerCoutCarburantMission(m),0); const fs=frais.filter(f=>(f.date||'').startsWith(String(annee))).reduce((s,f)=>s+(Number(f.montant)||0),0);
+            const w=window.open('','_blank'); if(!w) return; w.document.write(`<html><head><title>Bilan ${annee}</title><style>body{font-family:Arial;padding:40px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ddd;padding:8px;text-align:left}</style></head><body><h1>Suivi Vacations — Bilan ${annee}</h1><table><tr><th>Indicateur</th><th>Valeur</th></tr><tr><td>Vacations</td><td>${ms.length}</td></tr><tr><td>Heures</td><td>${h.toFixed(1)} h</td></tr><tr><td>Chiffre d'affaires brut</td><td>${formatEuro(ca)}</td></tr><tr><td>Kilomètres</td><td>${km.toLocaleString('fr-FR')} km</td></tr><tr><td>Carburant estimé</td><td>${formatEuro(carbu)}</td></tr><tr><td>Autres frais</td><td>${formatEuro(fs)}</td></tr><tr><td>Résultat après frais</td><td>${formatEuro(Math.max(0,ca-carbu-fs))}</td></tr></table><p>Document généré le ${dateLocaleISO()}.</p><script>window.print()<\\/script></body></html>`); w.document.close();
+        }
+
         function changerOnglet(nom) {
             ongletActif = nom;
-            ['planning', 'recap', 'documents', 'notifications', 'parametres'].forEach(o => {
+            ['pilotage', 'planning', 'recap', 'documents', 'notifications', 'parametres'].forEach(o => {
                 let el = document.getElementById('contenu-' + o);
                 if (el) el.classList.toggle('hidden', o !== nom);
                 let btn = document.getElementById('tab-' + o);
@@ -1266,7 +1470,8 @@
             });
             document.getElementById('btn-ajouter-global').classList.toggle('hidden', nom !== 'planning');
             document.getElementById('btn-mode-brut-net').classList.toggle('hidden', nom !== 'planning');
-            if (nom === 'documents') { initialiserDatesExportParDefaut(); peuplerSelectAuditEtablissements(); genererDossiersArchives(); }
+            if (nom === 'pilotage') { genererPilotage(); }
+            else if (nom === 'documents') { initialiserDatesExportParDefaut(); peuplerSelectAuditEtablissements(); genererDossiersArchives(); }
             else if (nom === 'parametres') { genererListeVehicules(); genererListeEtablissements(); }
             mettreAJourApplication();
         }
@@ -1274,12 +1479,15 @@
         function mettreAJourSelectVehicules() {
             let select = document.getElementById('input-vehicule-mission');
             if (!select) return;
-            select.innerHTML = '';
-            if (vehicules.length === 0) {
-                select.innerHTML = `<option value="">-- Aucun véhicule (ajoutez-en un) --</option>`;
-                return;
-            }
-            vehicules.forEach(v => { select.innerHTML += `<option value="${v.id}">${v.nom}</option>`; });
+            const valeurActuelle = select.value;
+            select.innerHTML = '<option value="">-- Aucun véhicule --</option>';
+            vehicules.forEach(v => {
+                const option = document.createElement('option');
+                option.value = String(v.id);
+                option.textContent = v.nom;
+                select.appendChild(option);
+            });
+            if (valeurActuelle !== '') select.value = valeurActuelle;
         }
 
         function mettreAJourDatalist() {
@@ -1308,7 +1516,7 @@
             mettreAJourDatalist(); mettreAJourSelectVehicules();
             document.getElementById('modal-titre').innerText = "Ajouter une vacation";
             document.getElementById('input-index').value = "-1";
-            document.getElementById('input-date').value = dateSpec || new Date().toISOString().slice(0, 10);
+            document.getElementById('input-date').value = dateSpec || dateLocaleISO();
             document.getElementById('input-lieu').value = '';
             document.getElementById('input-heure-debut').value = '07:00';
             document.getElementById('input-heure-fin').value = '17:00';
@@ -1342,8 +1550,10 @@
             calculerHeuresAutomatique();
             document.getElementById('input-montant-reel').value = m.montantReel !== null && m.montantReel !== undefined ? m.montantReel : '';
             document.getElementById('input-distance').value = m.distance || 0;
-            if (m.vehiculeId) document.getElementById('input-vehicule-mission').value = m.vehiculeId;
-            document.getElementById('input-statut').value = m.statut;
+            const selectVehicule = document.getElementById('input-vehicule-mission');
+            selectVehicule.value = m.vehiculeId != null ? String(m.vehiculeId) : '';
+            if (selectVehicule.value !== String(m.vehiculeId ?? '')) selectVehicule.value = '';
+            document.getElementById('input-statut').value = m.statut || 'blue';
             document.getElementById('input-commentaire').value = m.commentaire || '';
             document.getElementById('input-contrat').checked = !!m.contratSigne;
             document.getElementById('input-bulletin').checked = !!m.bulletinRecu;
@@ -1443,48 +1653,64 @@
         }
 
         function sauvegarderMission() {
-            let idx = parseInt(document.getElementById('input-index').value);
-            let date = document.getElementById('input-date').value;
-            let lieu = document.getElementById('input-lieu').value.trim() || 'Mission';
-            let heureDebut = document.getElementById('input-heure-debut').value;
-            let heureFin = document.getElementById('input-heure-fin').value;
-            let pause = parseFloat(document.getElementById('input-pause').value) || 0;
-            let taux = parseFloat(document.getElementById('input-taux').value) || 0;
-            let tauxNuit = document.getElementById('input-taux-nuit').value !== '' ? parseFloat(document.getElementById('input-taux-nuit').value) : null;
-            let heures = parseFloat(document.getElementById('input-heures').value) || 0;
-            let montantReel = document.getElementById('input-montant-reel').value !== '' ? parseFloat(document.getElementById('input-montant-reel').value) : null;
-            let vehiculeId = parseInt(document.getElementById('input-vehicule-mission').value) || 1;
-            let distance = parseFloat(document.getElementById('input-distance').value) || 0;
-            let statut = document.getElementById('input-statut').value;
-            let commentaire = document.getElementById('input-commentaire').value.trim();
-            let contratSigne = document.getElementById('input-contrat').checked;
-            let bulletinRecu = document.getElementById('input-bulletin').checked;
+            const btnEnregistrer = document.querySelector('#modal button[onclick="sauvegarderMission()"]');
+            if (btnEnregistrer?.disabled) return;
+            if (btnEnregistrer) { btnEnregistrer.disabled = true; btnEnregistrer.classList.add('opacity-60', 'cursor-wait'); }
 
-            let idMission = idx >= 0 ? missions[idx].id : (missions.length > 0 ? Math.max(...missions.map(m => m.id)) + 1 : 1);
-            let bulletinFichier = idx >= 0 ? missions[idx].bulletinFichier : null;
-            let bulletinNomFichier = idx >= 0 ? missions[idx].bulletinNomFichier : null;
+            try {
+                let idx = parseInt(document.getElementById('input-index').value);
+                let date = document.getElementById('input-date').value;
+                let lieu = document.getElementById('input-lieu').value.trim() || 'Mission';
+                let heureDebut = document.getElementById('input-heure-debut').value;
+                let heureFin = document.getElementById('input-heure-fin').value;
+                let pause = parseFloat(document.getElementById('input-pause').value) || 0;
+                let taux = parseFloat(document.getElementById('input-taux').value) || 0;
+                let tauxNuit = document.getElementById('input-taux-nuit').value !== '' ? parseFloat(document.getElementById('input-taux-nuit').value) : null;
+                let heures = parseFloat(document.getElementById('input-heures').value) || 0;
+                let montantReel = document.getElementById('input-montant-reel').value !== '' ? parseFloat(document.getElementById('input-montant-reel').value) : null;
+                let valeurVehicule = document.getElementById('input-vehicule-mission').value;
+                let vehiculeId = valeurVehicule !== '' ? parseInt(valeurVehicule) : null;
+                let distance = parseFloat(document.getElementById('input-distance').value) || 0;
+                let statut = document.getElementById('input-statut').value || 'blue';
+                let commentaire = document.getElementById('input-commentaire').value.trim();
+                let contratSigne = document.getElementById('input-contrat').checked;
+                let bulletinRecu = document.getElementById('input-bulletin').checked;
 
-            let nouv = { id: idMission, date, lieu, heureDebut, heureFin, pause, taux, tauxNuit, heures, montantReel, statut, vehiculeId, distance, commentaire, contratSigne, bulletinRecu, bulletinFichier, bulletinNomFichier };
-            if (idx === -1) missions.push(nouv); else missions[idx] = nouv;
+                if (!date) { alert("La date est obligatoire."); return; }
+                if (!heureDebut || !heureFin) { alert("Les horaires de début et de fin sont obligatoires."); return; }
+                if (pause < 0) { alert("La pause ne peut pas être négative."); return; }
+                const [hd, md] = heureDebut.split(':').map(Number);
+                const [hf, mf] = heureFin.split(':').map(Number);
+                let dureeBruteMinutes = (hf * 60 + mf) - (hd * 60 + md);
+                if (dureeBruteMinutes <= 0) dureeBruteMinutes += 24 * 60;
+                if (pause * 60 >= dureeBruteMinutes) { alert("La pause doit être inférieure à la durée de la vacation."); return; }
+                if (taux < 0 || (tauxNuit !== null && tauxNuit < 0) || distance < 0 || (montantReel !== null && montantReel < 0)) {
+                    alert("Les montants, taux et distances ne peuvent pas être négatifs.");
+                    return;
+                }
 
-            let etabExistant = etablissements.some(e => e.nom.toLowerCase() === lieu.toLowerCase() || (e.alias && e.alias.toLowerCase().split(',').some(a => a.trim() === lieu.toLowerCase())));
+                let idMission = idx >= 0 ? missions[idx].id : (missions.length > 0 ? Math.max(...missions.map(m => Number(m.id) || 0)) + 1 : 1);
+                let bulletinFichier = idx >= 0 ? missions[idx].bulletinFichier : null;
+                let bulletinNomFichier = idx >= 0 ? missions[idx].bulletinNomFichier : null;
 
-            sauvegarderDonneesCloud(); fermerModal(); mettreAJourApplication();
+                let nouv = { id: idMission, date, lieu, heureDebut, heureFin, pause, taux, tauxNuit, heures, montantReel, statut, vehiculeId, distance, commentaire, contratSigne, bulletinRecu, bulletinFichier, bulletinNomFichier };
+                if (idx === -1) missions.push(nouv); else if (missions[idx]) missions[idx] = nouv; else { alert("Cette vacation n'existe plus. Rechargez la page."); return; }
 
-            if (!etabExistant && lieu !== '' && lieu !== 'Mission') {
+                let etabExistant = etablissements.some(e => e.nom.toLowerCase() === lieu.toLowerCase() || (e.alias && e.alias.toLowerCase().split(',').some(a => a.trim() === lieu.toLowerCase())));
+
+                sauvegarderDonneesCloud(); fermerModal(); mettreAJourApplication();
+
+                if (!etabExistant && lieu !== '' && lieu !== 'Mission') {
+                    setTimeout(() => {
+                        if (confirm(`L'établissement "${lieu}" n'existe pas encore dans vos réglages. Voulez-vous le créer avec les informations renseignées sur cette mission ?`)) {
+                            ouvrirModalEtablissement(lieu, { nom: lieu, heureDebut, heureFin, pause, taux, tauxNuit, distance });
+                        }
+                    }, 100);
+                }
+            } finally {
                 setTimeout(() => {
-                    if (confirm(`L'établissement "${lieu}" n'existe pas encore dans vos réglages. Voulez-vous le créer avec les informations renseignées sur cette mission ?`)) {
-                        ouvrirModalEtablissement(lieu, {
-                            nom: lieu,
-                            heureDebut: heureDebut,
-                            heureFin: heureFin,
-                            pause: pause,
-                            taux: taux,
-                            tauxNuit: tauxNuit,
-                            distance: distance
-                        });
-                    }
-                }, 100);
+                    if (btnEnregistrer) { btnEnregistrer.disabled = false; btnEnregistrer.classList.remove('opacity-60', 'cursor-wait'); }
+                }, 250);
             }
         }
 
@@ -1695,7 +1921,7 @@
             let container = document.getElementById('liste-notifications');
             if (!container) return;
             container.innerHTML = '';
-            let aujourdhuiStr = new Date().toISOString().slice(0, 10);
+            let aujourdhuiStr = dateLocaleISO();
             let alertes = [];
 
             missions.forEach(m => {
@@ -1852,7 +2078,7 @@
                 if (missionsMoisCourant.length === 0) {
                     timelineMob.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center text-gray-400 text-sm italic">Aucune vacation ce mois-ci.</div>`;
                 } else {
-                    let aujourdhuiStr = new Date().toISOString().slice(0, 10);
+                    let aujourdhuiStr = dateLocaleISO();
                     let joursSemaineNoms = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
                     
                     missionsMoisCourant.forEach(m => {
