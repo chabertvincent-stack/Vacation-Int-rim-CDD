@@ -143,11 +143,6 @@
             </div>
 
             <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex items-center space-x-6 text-xs md:text-sm flex-wrap gap-y-2">
-                    <span class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span> Payé</span>
-                    <span class="flex items-center"><span class="w-3 h-3 bg-orange-500 rounded-full mr-2"></span> Partiel</span>
-                    <span class="flex items-center"><span class="w-3 h-3 bg-blue-600 rounded-full mr-2"></span> Non payé</span>
-                </div>
 
                 <div class="flex items-center space-x-2 bg-gray-100 p-1 rounded-xl border border-gray-200 text-sm">
                     <button onclick="changerTypeVue('mois')" id="btn-vue-mois" class="px-3.5 py-1.5 rounded-lg font-medium bg-white text-blue-700 shadow-sm transition cursor-pointer">Vue Mois</button>
@@ -194,11 +189,11 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4 text-xs text-gray-500 pt-1">
-                    <span class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-sm mr-1.5"></span> Total gagné</span>
-                    <span class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-sm mr-1.5"></span> Déjà perçu (payé)</span>
+                    <span class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-sm mr-1.5"></span> Reste à payer</span>
+                    <span class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-sm mr-1.5"></span> Déjà payé</span>
                 </div>
-                <div id="diagramme-barres" class="h-52 w-full flex items-end gap-1 sm:gap-2 pt-4 pb-1 border-b border-gray-200"></div>
-                <div id="detail-mois-graphe" class="rounded-xl bg-gray-50 border border-gray-200 p-4 text-sm"></div>
+                <div id="diagramme-barres" class="w-full flex items-end gap-1 sm:gap-2 pt-2 pb-1 border-b border-gray-200"></div>
+                <div class="text-right"><button onclick="allerAuMoisRecap(moisGrapheSel)" class="text-xs text-blue-600 font-semibold cursor-pointer">Voir le détail de ce mois ↓</button></div>
             </div>
 
             <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
@@ -414,12 +409,12 @@
             <h3 class="text-lg font-bold text-gray-800">Valider le paiement</h3>
             <p id="pl-resume" class="text-xs text-gray-500"></p>
             <div class="grid grid-cols-2 gap-3">
-                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Montant réellement reçu (€)</label><input type="number" step="0.01" id="pl-total" oninput="majApercuPaiementLot()" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm font-bold"></div>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Total reçu (€)</label><input type="number" step="0.01" id="pl-total" oninput="majTotalPaiementLot()" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm font-bold"></div>
                 <div><label class="block text-xs font-semibold text-gray-600 mb-1">Date du paiement</label><input type="date" id="pl-date" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm"></div>
             </div>
-            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Répartition entre les vacations</label>
-                <select id="pl-mode" onchange="majApercuPaiementLot()" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm"><option value="prorata">Au prorata du montant estimé</option><option value="egal">À parts égales</option></select></div>
-            <div id="pl-apercu" class="space-y-1 text-xs"></div>
+            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Si vous modifiez le total, répartir…</label>
+                <select id="pl-mode" onchange="majTotalPaiementLot()" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm"><option value="prorata">Au prorata du montant estimé</option><option value="egal">À parts égales</option></select></div>
+            <div><div class="text-xs font-semibold text-gray-600 mb-1">Montant réellement reçu par vacation (modifiable)</div><div id="pl-lignes" class="space-y-2"></div></div>
             <p id="pl-ecart" class="text-xs text-gray-600"></p>
             <div class="flex justify-end space-x-2 pt-1">
                 <button onclick="fermerModalPaiementLot()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-xl text-sm cursor-pointer font-medium">Annuler</button>
@@ -1080,9 +1075,9 @@
                                 <span class="text-base font-bold text-gray-800">${lieu}</span>
                                 <span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-0.5 rounded-full font-semibold ml-2">${fichiersUniques.length} bulletin(s)</span>
                             </div>
-                            <span id="fleche-${folderId}" class="text-gray-400 font-bold text-xs transform transition-transform duration-200">▶</span>
+                            <span id="fleche-${folderId}" class="text-gray-400 font-bold text-xs transform transition-transform duration-200">${dossiersOuverts.has(lieu) ? '▼' : '▶'}</span>
                         </button>
-                        <div id="contenu-${folderId}" class="hidden p-4.5 border-t border-gray-200 space-y-2.5 bg-white">
+                        <div id="contenu-${folderId}" data-lieu="${esc(lieu)}" class="${dossiersOuverts.has(lieu) ? '' : 'hidden'} p-4.5 border-t border-gray-200 space-y-2.5 bg-white">
                             ${itemsHtml}
                         </div>
                     </div>
@@ -1090,16 +1085,17 @@
             }
         }
 
+        let dossiersOuverts = new Set();
         function basculerAffichageDossier(folderId) {
             let content = document.getElementById(`contenu-${folderId}`);
             let arrow = document.getElementById(`fleche-${folderId}`);
             if (!content || !arrow) return;
             if (content.classList.contains('hidden')) {
                 content.classList.remove('hidden');
-                arrow.innerText = '▼';
+                arrow.innerText = '▼'; dossiersOuverts.add(content.dataset.lieu);
             } else {
                 content.classList.add('hidden');
-                arrow.innerText = '▶';
+                arrow.innerText = '▶'; dossiersOuverts.delete(content.dataset.lieu);
             }
         }
 
@@ -1237,8 +1233,10 @@
                 m.bulletinRecu = true;
                 if (fileKey) { m.bulletinFichier = fileKey; m.bulletinNomFichier = dernierFichierScanNom; }
             });
+            if (fileKey) dossiersOuverts.add(etab);
             sauvegarderDonneesCloud(); mettreAJourApplication(); fermerAuditBulletin();
-            alert("Opération réussie !");
+            const inp = document.getElementById('input-scan-bulletin'); if (inp) inp.value = '';
+            alert("Opération réussie ! Le bulletin est classé dans le dossier de l'établissement.");
         }
 
         async function telechargerArchivePeriodique() {
@@ -1459,32 +1457,43 @@
             let reste = Math.round(total * 100);
             return w.map((x, i) => { if (i === ms.length - 1) return reste / 100; const c = Math.round(total * 100 * x / S); reste -= c; return c / 100; });
         }
+        let plIds = [];
         function ouvrirModalPaiementLot() {
             const ms = msLot(); if (!ms.length) return;
+            plIds = ms.map(m => m.id);
             const est = ms.reduce((s, m) => s + calculerMontantMission(m), 0);
-            document.getElementById('pl-resume').innerText = `${ms.length} vacation(s) sélectionnée(s) — montant estimé : ${formatEuro(est)}`;
-            document.getElementById('pl-total').value = est.toFixed(2);
+            document.getElementById('pl-resume').innerText = `${ms.length} vacation(s) — estimé : ${formatEuro(est)}. Saisissez ce que vous avez réellement reçu, au total ou ligne par ligne.`;
             document.getElementById('pl-date').value = dateLocaleISO();
+            document.getElementById('pl-total').value = est.toFixed(2);
+            document.getElementById('pl-lignes').innerHTML = ms.map(m => `<div class="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2"><div class="min-w-0 flex-1"><div class="text-xs font-semibold truncate">${fmtJour(m.date).slice(0, 5)} · ${esc(m.lieu)}</div><div class="text-[11px] text-gray-400">${m.heureDebut}-${m.heureFin} · estimé ${montantTheorique(m).toFixed(2)} €</div></div><input type="number" step="0.01" min="0" data-id="${m.id}" value="${calculerMontantMission(m).toFixed(2)}" oninput="majLignePaiementLot()" class="pl-ligne w-24 border border-gray-300 rounded-lg p-2 text-sm font-bold text-right"><span class="text-sm text-gray-500">€</span></div>`).join('');
             document.getElementById('modal-paiement-lot').classList.remove('hidden');
-            majApercuPaiementLot();
+            majEcartPaiementLot();
         }
         function fermerModalPaiementLot() {
             document.getElementById('modal-paiement-lot').classList.add('hidden');
             if (ongletActif !== 'planning') { modeSelection = false; selectionIds.clear(); mettreAJourApplication(); }
         }
-        function majApercuPaiementLot() {
-            const ms = msLot(), total = parseFloat(document.getElementById('pl-total').value) || 0;
-            const parts = repartirPaiement(ms, total, document.getElementById('pl-mode').value);
-            document.getElementById('pl-apercu').innerHTML = ms.map((m, i) => `<div class="flex justify-between gap-2 bg-gray-50 rounded-lg px-3 py-1.5"><span class="truncate">${fmtJour(m.date)} · ${esc(m.lieu)} · ${m.heureDebut}-${m.heureFin}</span><b class="shrink-0">${parts[i].toFixed(2)} €</b></div>`).join('');
-            const est = ms.reduce((s, m) => s + montantTheorique(m), 0), ec = total - est;
+        function majEcartPaiementLot() {
+            const ms = plIds.map(id => missions.find(m => m.id === id)).filter(Boolean);
+            const total = parseFloat(document.getElementById('pl-total').value) || 0, est = ms.reduce((s, m) => s + montantTheorique(m), 0), ec = total - est;
             document.getElementById('pl-ecart').innerHTML = `Estimé d'après vos taux : ${formatEuro(est)} · écart : <b class="${ec < -0.5 ? 'text-red-600' : 'text-green-700'}">${ec >= 0 ? '+' : ''}${ec.toFixed(2)} €</b>`;
         }
-        function validerPaiementLot() {
-            const ms = msLot(), total = parseFloat(document.getElementById('pl-total').value);
-            if (!ms.length || !(total > 0)) { alert("Saisissez le montant réellement reçu."); return; }
+        function majTotalPaiementLot() {
+            const ms = plIds.map(id => missions.find(m => m.id === id)).filter(Boolean), total = parseFloat(document.getElementById('pl-total').value) || 0;
             const parts = repartirPaiement(ms, total, document.getElementById('pl-mode').value);
+            document.querySelectorAll('#pl-lignes .pl-ligne').forEach((inp, i) => { inp.value = parts[i].toFixed(2); });
+            majEcartPaiementLot();
+        }
+        function majLignePaiementLot() {
+            const somme = [...document.querySelectorAll('#pl-lignes .pl-ligne')].reduce((s, i) => s + (parseFloat(i.value) || 0), 0);
+            document.getElementById('pl-total').value = somme.toFixed(2);
+            majEcartPaiementLot();
+        }
+        function validerPaiementLot() {
+            const lignes = [...document.querySelectorAll('#pl-lignes .pl-ligne')].map(i => ({ id: Number(i.dataset.id), v: parseFloat(i.value) }));
+            if (!lignes.length || lignes.some(l => !(l.v > 0))) { alert("Chaque vacation doit avoir un montant reçu supérieur à 0."); return; }
             const g = 'pay_' + Date.now(), d = document.getElementById('pl-date').value || dateLocaleISO();
-            ms.forEach((m, i) => { m.montantReel = parts[i]; m.statut = 'green'; m.datePaiement = d; m.paiementGroupe = g; });
+            lignes.forEach(l => { const m = missions.find(x => x.id === l.id); if (m) { m.montantReel = Math.round(l.v * 100) / 100; m.statut = 'green'; m.datePaiement = d; m.paiementGroupe = g; } });
             modeSelection = false; selectionIds.clear();
             document.getElementById('modal-paiement-lot').classList.add('hidden');
             sauvegarderDonneesCloud(); mettreAJourApplication();
@@ -1494,7 +1503,7 @@
         function carteListe(m) {
             const idx = missions.findIndex(x => x.id === m.id), h = calculerHeuresMission(m);
             const st = m.statut === 'green' ? ['Payé', 'bg-green-100 text-green-700', 'bg-green-500'] : (m.statut === 'orange' ? ['Partiel', 'bg-orange-100 text-orange-700', 'bg-orange-500'] : ['À régler', 'bg-blue-100 text-blue-700', 'bg-blue-600']);
-            return `<div onclick="clicMission(event,${m.id},${idx})" class="${classeSel(m)} flex items-stretch bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden cursor-pointer"><span class="w-1.5 ${st[2]}"></span><div class="flex-1 p-3 flex justify-between gap-2"><div class="min-w-0"><div class="font-bold text-sm text-gray-900 truncate">${esc(m.lieu)}</div><div class="text-xs text-gray-500">🕒 ${m.heureDebut}–${m.heureFin} · ${h.toFixed(1)} h</div></div><div class="text-right shrink-0"><div class="font-extrabold text-sm text-blue-600">${valeurAff(m).toFixed(2)} €</div><span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${st[1]}">${st[0]}</span></div></div></div>`;
+            return `<div onclick="clicMission(event,${m.id},${idx})" class="${classeSel(m)} flex items-stretch w-full min-w-0 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden cursor-pointer"><span class="w-1.5 shrink-0 ${st[2]}"></span><div class="flex-1 min-w-0 p-3 flex justify-between gap-2"><div class="min-w-0"><div class="font-bold text-sm text-gray-900 truncate">${esc(m.lieu)}</div><div class="text-xs text-gray-500">🕒 ${m.heureDebut}–${m.heureFin} · ${h.toFixed(1)} h</div></div><div class="text-right shrink-0"><div class="font-extrabold text-sm text-blue-600">${valeurAff(m).toFixed(2)} €</div><span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${st[1]}">${st[0]}</span></div></div></div>`;
         }
         function genererListeSemaines(liste) {
             if (!liste.length) return `<div class="bg-white p-6 rounded-2xl border border-gray-200 text-center text-gray-400 text-sm italic">Aucune vacation sur cette période.</div>`;
@@ -1507,9 +1516,9 @@
                 const jours = {}; ms.forEach(m => (jours[m.date] = jours[m.date] || []).push(m));
                 const corps = Object.keys(jours).sort().map(j => {
                     const d = new Date(j + 'T00:00:00'), aujd = j === auj;
-                    return `<div class="flex gap-3"><div class="w-12 shrink-0 text-center pt-1"><div class="text-[10px] font-semibold ${aujd ? 'text-blue-600' : 'text-gray-400'}">${['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'][d.getDay()]}</div><div class="text-lg font-extrabold ${aujd ? 'bg-blue-600 text-white rounded-lg' : 'text-gray-800'}">${d.getDate()}</div></div><div class="flex-1 space-y-2">${jours[j].map(carteListe).join('')}</div></div>`;
+                    return `<div class="flex gap-3"><div class="w-12 shrink-0 text-center pt-1"><div class="text-[10px] font-semibold ${aujd ? 'text-blue-600' : 'text-gray-400'}">${['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'][d.getDay()]}</div><div class="text-lg font-extrabold ${aujd ? 'bg-blue-600 text-white rounded-lg' : 'text-gray-800'}">${d.getDate()}</div></div><div class="flex-1 min-w-0 space-y-2">${jours[j].map(carteListe).join('')}</div></div>`;
                 }).join('');
-                return `<details ${ouvert ? 'open' : ''} ontoggle="semainesOuvertes['${k}']=this.open" class="bg-gray-50 rounded-2xl border border-gray-200"><summary class="cursor-pointer p-3 flex justify-between items-center gap-2"><div><div class="font-bold text-sm text-gray-800">Semaine du ${d1.getDate()} ${MOIS_COURTS[d1.getMonth()]} au ${d2.getDate()} ${MOIS_COURTS[d2.getMonth()]}</div><div class="text-[11px] text-gray-500">${h.toFixed(1)} h · ${ms.length} vacation(s)</div></div><div class="text-right"><div class="font-extrabold text-sm text-gray-800">${tot.toFixed(2)} €</div><div class="text-[11px] font-semibold ${nb ? 'text-blue-600' : 'text-green-600'}">${nb ? nb + ' à régler' : '✓ tout payé'}</div></div></summary><div class="p-3 pt-1 space-y-3">${corps}</div></details>`;
+                return `<details ${ouvert ? 'open' : ''} ontoggle="semainesOuvertes['${k}']=this.open" class="bg-gray-50 rounded-2xl border border-gray-200 overflow-hidden"><summary class="cursor-pointer p-3 flex justify-between items-center gap-2"><div><div class="font-bold text-sm text-gray-800">Semaine du ${d1.getDate()} ${MOIS_COURTS[d1.getMonth()]} au ${d2.getDate()} ${MOIS_COURTS[d2.getMonth()]}</div><div class="text-[11px] text-gray-500">${h.toFixed(1)} h · ${ms.length} vacation(s)</div></div><div class="text-right"><div class="font-extrabold text-sm text-gray-800">${tot.toFixed(2)} €</div><div class="text-[11px] font-semibold ${nb ? 'text-blue-600' : 'text-green-600'}">${nb ? nb + ' à régler' : '✓ tout payé'}</div></div></summary><div class="p-3 pt-1 space-y-3 min-w-0">${corps}</div></details>`;
             }).join('<div class="h-2"></div>');
         }
 
@@ -1915,21 +1924,15 @@
             // Graphique annuel (cliquable)
             const gains = Array(12).fill(0), percus = Array(12).fill(0);
             missions.forEach(m => { const [a, mm] = m.date.split('-').map(Number); if (a === anneeGraphe) { gains[mm - 1] += valeurAff(m); percus[mm - 1] += partPercue(m); } });
-            const max = Math.max(...gains, 100), abr = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"];
+            const max = Math.max(...gains, 100), abr = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"], H = 190;
+            const eur0 = v => Math.round(v).toLocaleString('fr-FR') + ' €';
             document.getElementById('diagramme-barres').innerHTML = gains.map((g, i) => {
-                const hg = g > 0 ? Math.max(g / max * 100, 4) : 1, hp = percus[i] > 0 ? Math.max(percus[i] / max * 100, 4) : 0, sel = i === moisGrapheSel;
-                return `<button type="button" onclick="selectionnerMoisGraphe(${i})" class="flex-1 min-w-0 h-full flex flex-col items-center justify-end cursor-pointer ${sel ? '' : 'opacity-60'}"><div class="flex-1 w-full max-w-[24px] relative bg-gray-100 rounded-t overflow-hidden ${sel ? 'ring-2 ring-blue-400' : ''}"><div class="absolute bottom-0 w-full bg-blue-500" style="height:${hg}%"></div><div class="absolute bottom-0 w-full bg-green-500" style="height:${hp}%"></div></div><span class="text-[10px] mt-1 ${sel ? 'font-bold text-blue-700' : 'text-gray-400'}">${abr[i]}</span></button>`;
+                const sel = i === moisGrapheSel, hg = g > 0 ? Math.max(g / max * H, 4) : 2, hp = percus[i] > 0 ? Math.max(percus[i] / max * H, 4) : 0, reste = Math.max(0, g - percus[i]);
+                const hr = hg - hp;
+                const lblP = sel && percus[i] > 0 && hp >= 16 ? `<div class="absolute bottom-0 w-full flex items-center justify-center text-[10px] font-bold text-white" style="height:${hp}px">${eur0(percus[i])}</div>` : '';
+                const lblR = sel && reste > 0.5 && hr >= 16 ? `<div class="absolute w-full flex items-center justify-center text-[10px] font-bold text-white" style="bottom:${hp}px;height:${hr}px">${eur0(reste)}</div>` : '';
+                return `<button type="button" onclick="selectionnerMoisGraphe(${i})" class="${sel ? 'flex-[3.2]' : 'flex-1'} min-w-0 flex flex-col items-center justify-end cursor-pointer transition-all duration-200 ${sel ? '' : 'opacity-60'}"><div class="w-full ${sel ? '' : 'max-w-[24px]'} relative bg-gray-100 rounded-t overflow-hidden ${sel ? 'ring-2 ring-blue-400' : ''}" style="height:${H}px"><div class="absolute bottom-0 w-full bg-blue-500" style="height:${hg}px"></div><div class="absolute bottom-0 w-full bg-green-500" style="height:${hp}px"></div>${lblR}${lblP}</div><span class="text-[10px] mt-1 ${sel ? 'font-bold text-blue-700' : 'text-gray-400'}">${abr[i]}</span></button>`;
             }).join('');
-            const i = moisGrapheSel, msG = missions.filter(m => { const [a, mm] = m.date.split('-').map(Number); return a === anneeGraphe && mm - 1 === i; });
-            const T = gains[i], P = percus[i], R = Math.max(0, T - P), parLieu = {};
-            msG.forEach(m => { const o = parLieu[m.lieu] = parLieu[m.lieu] || { t: 0, p: 0 }; o.t += valeurAff(m); o.p += partPercue(m); });
-            document.getElementById('detail-mois-graphe').innerHTML = msG.length === 0
-                ? `<span class="text-gray-400 italic">${MOIS_LONGS[i]} ${anneeGraphe} : aucune vacation. Touchez une autre barre.</span>`
-                : `<div class="flex flex-wrap justify-between items-center gap-2"><b class="text-gray-800">${MOIS_LONGS[i]} ${anneeGraphe}</b><button onclick="allerAuMoisRecap(${i})" class="text-xs text-blue-600 font-semibold cursor-pointer">Voir le détail du mois →</button></div>
-                   <div class="grid grid-cols-3 gap-2 mt-3 text-center"><div><div class="text-[11px] text-gray-500">Total</div><b>${formatEuro(T)}</b></div><div><div class="text-[11px] text-gray-500">Déjà payé</div><b class="text-green-600">${formatEuro(P)}</b></div><div><div class="text-[11px] text-gray-500">Reste à payer</div><b class="${R > 0.005 ? 'text-orange-600' : 'text-gray-400'}">${formatEuro(R)}</b></div></div>
-                   <div class="h-2 bg-gray-200 rounded-full mt-3 overflow-hidden"><div class="h-2 bg-green-500" style="width:${T ? Math.min(100, P / T * 100) : 0}%"></div></div>
-                   <div class="mt-3 space-y-1 text-xs">${Object.entries(parLieu).map(([l, o]) => `<div class="flex justify-between gap-2"><span class="truncate">${esc(l)}</span><span class="shrink-0 text-gray-600">payé ${formatEuro(o.p)} / ${formatEuro(o.t)}${o.t - o.p > 0.005 ? ` · <b class="text-orange-600">reste ${formatEuro(o.t - o.p)}</b>` : ' ✓'}</span></div>`).join('')}</div>`;
-
             // Stats du mois
             const mDuMois = missions.filter(m => { const [a, mm] = m.date.split('-').map(Number); return a === annee && mm - 1 === mois; });
             const tot = mDuMois.reduce((s, m) => s + valeurAff(m), 0), per = mDuMois.reduce((s, m) => s + partPercue(m), 0);
@@ -2277,6 +2280,7 @@
             }
 
             timelineMob.innerHTML = genererListeSemaines(missionsFiltrees);
+            if (ongletActif === 'documents') genererDossiersArchives();
             genererRecapMensuel();
             verifierNotificationsAlertes();
             majBarreSelection();
