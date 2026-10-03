@@ -51,59 +51,51 @@
     </div>
 
     <!-- Bandeau supérieur -->
-    <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-3.5 md:py-4.5 flex items-center justify-between shadow-sm mb-8 gap-3">
+    <header class="sticky top-0 z-40 bg-white border-b border-gray-200 px-4 md:px-8 py-3.5 md:py-4.5 flex items-center justify-between shadow-sm mb-8 gap-3">
         <div class="flex items-center space-x-2 font-bold text-gray-800 shrink-0">
             <div class="bg-blue-600 text-white p-2 rounded-xl text-sm md:text-base shadow-sm">💼</div>
             <span class="text-sm md:text-lg truncate max-w-[140px] sm:max-w-none">Suivi Vacations</span>
         </div>
         
-        <nav class="hidden md:flex flex-1 min-w-0 space-x-1.5 bg-gray-50 p-1.5 rounded-xl border border-gray-200 overflow-x-auto max-w-full">
-            <button onclick="changerOnglet('planning')" id="tab-planning" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 transition cursor-pointer whitespace-nowrap">Planning</button>
-            <button onclick="changerOnglet('recap')" id="tab-recap" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer whitespace-nowrap">Récap</button>
-            <button onclick="changerOnglet('pilotage')" id="tab-pilotage" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer whitespace-nowrap">Pilotage</button>
+        <nav class="hidden md:flex space-x-1.5 bg-gray-50 p-1.5 rounded-xl border border-gray-200">
+            <button onclick="changerOnglet('planning')" id="tab-planning" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 transition cursor-pointer">Planning</button>
+            <button onclick="changerOnglet('recap')" id="tab-recap" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Récap</button>
+            <button onclick="changerOnglet('pilotage')" id="tab-pilotage" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Pilotage</button>
             <button onclick="changerOnglet('documents')" id="tab-documents" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Documents</button>
-            <button onclick="changerOnglet('notifications')" id="tab-notifications" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer flex items-center space-x-1.5">
-                <span>Alertes</span>
-                <span id="badge-notif" class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full hidden">0</span>
-            </button>
+            <button onclick="changerOnglet('notifications')" id="tab-notifications" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer flex items-center space-x-1.5"><span>Alertes & Paie</span><span id="badge-notif" class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full hidden">0</span></button>
             <button onclick="changerOnglet('parametres')" id="tab-parametres" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Réglages</button>
         </nav>
         
-        <div class="flex items-center space-x-2 md:space-x-3 shrink-0">
-            <button onclick="deconnecterUtilisateur()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-xl font-medium text-xs md:text-sm transition border border-gray-300 shadow-sm cursor-pointer whitespace-nowrap" title="Se déconnecter">🚪 Déconnexion</button>
-            <button onclick="basculerModeBrutNet()" id="btn-mode-brut-net" class="bg-gray-50 hover:bg-gray-100 text-gray-800 px-3 md:px-4 py-2 rounded-xl font-medium text-xs md:text-sm transition border border-gray-300 shadow-sm cursor-pointer whitespace-nowrap">
-                <span class="inline md:hidden">Brut</span><span class="hidden md:inline">Mode : Brut (sans carburant)</span>
-            </button>
-            <button id="btn-ajouter-global" onclick="ouvrirModalAjout()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 md:px-5 py-2 rounded-xl font-medium shadow-sm transition cursor-pointer text-xs md:text-sm whitespace-nowrap">
-                + <span class="hidden sm:inline">Ajouter une mission</span><span class="inline sm:hidden">Ajouter</span>
-            </button>
+        <div class="flex items-center gap-2 shrink-0">
+            <button onclick="changerOnglet('parametres')" class="md:hidden w-10 h-10 flex items-center justify-center bg-gray-100 border border-gray-300 rounded-xl text-lg cursor-pointer" title="Réglages">⚙️</button>
+            <button id="btn-ajouter-global" onclick="ouvrirModalAjout()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 md:px-5 py-2.5 rounded-xl font-medium shadow-sm transition cursor-pointer text-xs md:text-sm whitespace-nowrap">+ <span class="hidden sm:inline">Ajouter une mission</span><span class="inline sm:hidden">Ajouter</span></button>
         </div>
     </header>
 
     <!-- Navigation Smartphone -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-1 py-2 flex justify-around items-center z-40 shadow-xl">
-        <button onclick="changerOnglet('planning')" id="m-tab-planning" class="flex flex-col items-center text-blue-600 font-semibold text-[11px] space-y-1 relative"><span class="text-xl">📅</span><span>Planning</span></button>
-        <button onclick="changerOnglet('recap')" id="m-tab-recap" class="flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📊</span><span>Récap</span></button>
-        <button onclick="changerOnglet('pilotage')" id="m-tab-pilotage" class="flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📈</span><span>Pilotage</span></button>
-        <button onclick="changerOnglet('documents')" id="m-tab-documents" class="flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📁</span><span>Docs</span></button>
-        <button onclick="changerOnglet('notifications')" id="m-tab-notifications" class="flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">🔔</span><span>Alertes</span><span id="badge-notif-mobile" class="absolute top-0 right-2 bg-red-500 text-white text-[9px] px-1.5 py-0.2 rounded-full hidden">0</span></button>
-        <button onclick="changerOnglet('parametres')" id="m-tab-parametres" class="flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">⚙️</span><span>Réglages</span></button>
+        <button onclick="changerOnglet('planning')" id="m-tab-planning" class="flex-1 flex flex-col items-center text-blue-600 font-semibold text-[11px] space-y-1 relative"><span class="text-xl">📅</span><span>Planning</span></button>
+        <button onclick="changerOnglet('recap')" id="m-tab-recap" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">💶</span><span>Récap</span></button>
+        <button onclick="changerOnglet('pilotage')" id="m-tab-pilotage" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📊</span><span>Pilotage</span></button>
+        <button onclick="changerOnglet('documents')" id="m-tab-documents" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📁</span><span>Docs</span></button>
+        <button onclick="changerOnglet('notifications')" id="m-tab-notifications" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">🔔</span><span>Alertes</span><span id="badge-notif-mobile" class="absolute top-0 right-3 bg-red-500 text-white text-[9px] px-1.5 rounded-full hidden">0</span></button>
     </div>
 
     <div class="max-w-6xl mx-auto px-4 md:px-6 pb-16">
         
         <!-- ONGLET PILOTAGE : NOUVELLES FONCTIONNALITÉS -->
-        <div id="contenu-pilotage" class="space-y-8">
+        <div id="contenu-pilotage" class="hidden space-y-8">
             <div>
                 <h2 class="text-2xl font-extrabold text-gray-800">📊 Pilotage annuel</h2>
-                <p class="text-gray-500 text-sm mt-1">Vue annuelle de votre activité et de votre kilométrage, avec un justificatif imprimable pour vos démarches.</p>
+                <p class="text-gray-500 text-sm mt-1">Vue globale de votre activité, de vos kilomètres, de vos frais et de vos encaissements.</p>
             </div>
+            <div id="pilot-vide" class="hidden bg-blue-50 border border-blue-200 text-blue-900 text-sm rounded-2xl p-4">👋 Rien à afficher pour l'instant : ajoutez vos premières vacations dans le Planning et ces statistiques se rempliront toutes seules. Pensez aussi au <b>relevé kilométrique</b> pour votre déclaration.</div>
             <div class="bg-white p-5 md:p-7 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Année analysée</label>
                     <select id="pilotage-annee" onchange="genererPilotage()" class="border border-gray-300 rounded-xl p-2.5 text-sm bg-white"></select>
                 </div>
-                <button onclick="genererBilanAnnuel()" class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer">🖨️ Bilan annuel imprimable</button>
+                <div class="flex flex-wrap gap-2"><button onclick="genererAttestationKm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer">🚗 Relevé kilométrique (justificatif)</button><button onclick="genererBilanAnnuel()" class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer">🖨️ Bilan annuel</button></div>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 font-semibold uppercase">CA brut</p><p id="pilot-ca" class="text-2xl font-extrabold text-blue-600 mt-2">0,00 €</p></div>
@@ -124,13 +116,6 @@
             <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                 <div class="flex justify-between items-center mb-4"><div><h3 class="font-bold text-gray-800">🚗 Kilométrage fiscal</h3><p class="text-xs text-gray-500 mt-1">Total mensuel et annuel des kilomètres saisis dans les vacations.</p></div></div>
                 <div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="border-b text-left text-xs text-gray-500"><th class="p-2">Mois</th><th class="p-2">Km</th><th class="p-2">Vacations</th><th class="p-2">Véhicule principal</th></tr></thead><tbody id="pilot-km-table"></tbody></table></div>
-            </div>
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-                    <div><h3 class="font-bold text-gray-800">🚗 Justificatif kilométrique annuel</h3><p class="text-xs text-gray-500 mt-1">Document récapitulatif des kilomètres saisis dans vos vacations.</p></div>
-                    <button onclick="genererJustificatifKilometres()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-medium cursor-pointer">🖨️ Imprimer le justificatif</button>
-                </div>
-                <p class="text-sm text-gray-600">Le document reprend les kilomètres mois par mois, le total annuel, le nombre de vacations et le véhicule principal utilisé.</p>
             </div>
         </div>
 
@@ -164,7 +149,7 @@
                     <span class="flex items-center"><span class="w-3 h-3 bg-blue-600 rounded-full mr-2"></span> Non payé</span>
                 </div>
 
-                <div class="hidden md:flex items-center space-x-2 bg-gray-100 p-1 rounded-xl border border-gray-200 text-sm">
+                <div class="flex items-center space-x-2 bg-gray-100 p-1 rounded-xl border border-gray-200 text-sm">
                     <button onclick="changerTypeVue('mois')" id="btn-vue-mois" class="px-3.5 py-1.5 rounded-lg font-medium bg-white text-blue-700 shadow-sm transition cursor-pointer">Vue Mois</button>
                     <button onclick="changerTypeVue('semaine')" id="btn-vue-semaine" class="px-3.5 py-1.5 rounded-lg font-medium text-gray-600 transition cursor-pointer">Vue Semaine</button>
                 </div>
@@ -177,16 +162,17 @@
                 </div>
             </div>
 
+            <div class="flex flex-wrap items-center gap-2">
+                <button id="btn-mode-selection" onclick="basculerModeSelection()"></button>
+                <button class="btn-brut-net px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 cursor-pointer" onclick="basculerModeBrutNet()"></button>
+            </div>
+
             <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-200 shadow-sm">
                 <div id="vue-grille-bureau" class="hidden md:block">
                     <div class="grid grid-cols-7 gap-3 text-center font-semibold text-gray-400 text-xs uppercase tracking-wider mb-3">
                         <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>
                     </div>
                     <div id="grille-calendrier" class="grid grid-cols-7 gap-3"></div>
-                </div>
-                <div id="selection-calendrier-actions" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-white border border-blue-200 shadow-lg rounded-2xl p-3 space-y-2">
-                    <div class="flex items-center justify-between"><b id="selection-calendrier-count" class="text-sm text-gray-800">0 sélectionnée</b><button onclick="viderSelectionCalendrier()" class="text-xs text-gray-500">Annuler</button></div>
-                    <button onclick="ouvrirPaiementSelectionCalendrier()" class="w-full bg-blue-600 text-white rounded-xl py-2.5 text-sm font-semibold">💰 Enregistrer le paiement</button>
                 </div>
                 <div id="vue-timeline-mobile" class="block md:hidden space-y-3"></div>
             </div>
@@ -196,7 +182,7 @@
         <div id="contenu-recap" class="hidden space-y-8">
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl font-extrabold text-gray-800">Récap mensuel & Diagramme</h1>
-                <button id="btn-batch-paiement" onclick="ouvrirModalConfirmationRecap()" disabled class="bg-gray-300 text-white px-4 py-2.5 rounded-xl font-medium shadow-sm transition text-sm cursor-not-allowed">Enregistrer le paiement (0)</button>
+                <button id="btn-batch-paiement" onclick="ouvrirModalConfirmationRecap()" disabled class="bg-gray-300 text-white px-4 py-2.5 rounded-xl font-medium shadow-sm transition text-sm cursor-not-allowed">Tout marquer payé (0)</button>
             </div>
 
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-sm space-y-4">
@@ -211,7 +197,8 @@
                     <span class="flex items-center"><span class="w-3 h-3 bg-blue-500 rounded-sm mr-1.5"></span> Total gagné</span>
                     <span class="flex items-center"><span class="w-3 h-3 bg-green-500 rounded-sm mr-1.5"></span> Déjà perçu (payé)</span>
                 </div>
-                <div id="diagramme-barres" class="h-56 flex items-end justify-between gap-2.5 pt-6 pb-2 px-1 border-b border-gray-200"></div><div id="detail-graphe-mois" class="hidden mt-3 p-4 rounded-xl bg-blue-50 border border-blue-200 text-sm"></div>
+                <div id="diagramme-barres" class="h-52 w-full flex items-end gap-1 sm:gap-2 pt-4 pb-1 border-b border-gray-200"></div>
+                <div id="detail-mois-graphe" class="rounded-xl bg-gray-50 border border-gray-200 p-4 text-sm"></div>
             </div>
 
             <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
@@ -221,6 +208,7 @@
                     <button onclick="changerMoisRecap(1)" class="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-lg hover:bg-gray-100 font-bold text-gray-700 cursor-pointer">&gt;</button>
                     <button onclick="allerAujourdhuiRecap()" class="text-xs text-blue-600 font-semibold hover:underline ml-2 cursor-pointer">Ce mois</button>
                 </div>
+                <button class="btn-brut-net px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 cursor-pointer" onclick="basculerModeBrutNet()"></button>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -230,12 +218,10 @@
                 <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Déjà perçu</p><p id="recap-stat-percu" class="text-2xl md:text-3xl font-extrabold text-green-600 mt-2">0.00 €</p><p id="recap-reste" class="text-xs text-gray-400 font-medium mt-1.5">Reste à percevoir : 0.00 €</p></div>
             </div>
 
-            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                <div class="px-6 py-5 border-b border-gray-200 flex items-center justify-between gap-3">
-                    <div><h3 class="font-bold text-gray-800 text-base">Détail des vacations</h3><p class="text-xs text-gray-500 mt-1">Sélectionnez plusieurs vacations pour enregistrer un règlement reçu en une seule fois.</p></div>
-                    <label class="text-xs font-medium text-gray-600 whitespace-nowrap"><input type="checkbox" id="select-all-recap" onclick="basculerToutSelectionnerRecap(this)" class="mr-1 rounded border-gray-300 text-blue-600 cursor-pointer"> Tout sélectionner</label>
-                </div>
-                <div id="tableau-recap-corps" class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between"><h3 class="font-bold text-gray-800 text-base">Détail par établissement</h3>
+                    <label class="flex items-center gap-2 text-xs text-gray-600 cursor-pointer"><input type="checkbox" id="select-all-recap" onclick="basculerToutSelectionnerRecap(this)" class="rounded border-gray-300 text-blue-600"> Tout sélectionner</label></div>
+                <div id="cartes-recap" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
         </div>
 
@@ -286,7 +272,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block font-semibold text-gray-600 mb-1.5">Montant net avant impôt (€)</label>
+                            <label class="block font-semibold text-gray-600 mb-1.5">Net à payer (€)</label>
                             <input type="number" id="audit-montant-net" step="0.01" class="w-full border rounded-xl p-2.5 bg-white shadow-sm font-bold text-emerald-700" placeholder="ex: 342.14">
                         </div>
                         <div>
@@ -295,6 +281,7 @@
                         </div>
                     </div>
 
+                    <div class="text-xs text-gray-600 flex flex-wrap items-center gap-2"><label for="audit-coef">Abattement brut→net à appliquer à mes taux (%)</label><input type="number" id="audit-coef" value="0" min="0" max="50" step="1" class="w-20 border rounded-lg p-1.5 bg-white"><span class="text-gray-400">(0 si les taux saisis sont déjà des nets)</span></div>
                     <div class="pt-2">
                         <button onclick="lancerRapprochementAudit()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-xl text-sm shadow-sm cursor-pointer">Lancer la comparaison avec le planning</button>
                     </div>
@@ -371,17 +358,6 @@
             </div>
 
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-                <h3 class="font-bold text-gray-800 text-base flex items-center space-x-2"><span>🔔</span><span>Relances de paiement</span></h3>
-                <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-                    <label class="text-sm text-gray-700">Alerter après</label>
-                    <select id="reglage-delai-paiement" onchange="sauvegarderReglageDelaiPaiement()" class="border border-gray-300 rounded-xl p-2.5 text-sm bg-white">
-                        <option value="30">30 jours</option><option value="60">60 jours</option>
-                    </select>
-                    <span class="text-xs text-gray-500">Les vacations non payées dépassant ce délai apparaîtront dans Alertes avec un bouton de relance e-mail.</span>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-sm space-y-4">
                 <h3 class="font-bold text-gray-800 text-base flex items-center space-x-2"><span>💾</span><span>Sauvegardes & Données</span></h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
                     <button onclick="telechargerFichierSauvegarde()" class="bg-gray-50 hover:bg-gray-100 text-gray-800 p-3.5 rounded-xl font-medium text-xs border border-gray-200 shadow-sm cursor-pointer text-left flex items-center space-x-3 transition">
@@ -412,12 +388,44 @@
                             <div class="font-bold">Fusionner des missions</div>
                             <div class="text-[11px] text-gray-500 font-normal">Ajouter un fichier de missions externe</div>
                         </div>
-                        <input type="file" id="input-import-missions" accept=".json" onchange="importerMissionsSeules(event)" class="hidden">
-                    </label>
-                </div>
+                        <input type="file" id="input-import-missions" accept=".json" \1
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-sm">
+                <button onclick="deconnecterUtilisateur()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-xl font-medium text-sm border border-gray-300 cursor-pointer">🚪 Se déconnecter</button>
             </div>
         </div>
 
+    </div>
+
+    <!-- Barre de sélection de vacations -->
+    <div id="barre-selection" class="hidden fixed left-2 right-2 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-[640px] bottom-20 md:bottom-6 z-[60] bg-gray-900 text-white rounded-2xl shadow-2xl p-3 space-y-2">
+        <div class="flex items-center justify-between gap-2 text-sm">
+            <div><b id="sel-count">0</b> vacation(s) · <span id="sel-total">0,00 €</span> estimé</div>
+            <div class="flex gap-2">
+                <button onclick="basculerModeSelection()" class="px-3 py-2 rounded-xl bg-gray-700 text-xs cursor-pointer">Annuler</button>
+                <button id="btn-sel-valider" onclick="ouvrirModalPaiementLot()" class="px-3 py-2 rounded-xl bg-green-500 text-xs font-bold cursor-pointer">💰 Valider le paiement</button>
+            </div>
+        </div>
+        <select id="sel-lieu" onchange="selectionnerParLieu(this.value)" class="w-full rounded-lg bg-gray-800 border border-gray-600 p-2 text-xs"></select>
+    </div>
+
+    <!-- Modale paiement groupé -->
+    <div id="modal-paiement-lot" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-[70]">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-bold text-gray-800">Valider le paiement</h3>
+            <p id="pl-resume" class="text-xs text-gray-500"></p>
+            <div class="grid grid-cols-2 gap-3">
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Montant réellement reçu (€)</label><input type="number" step="0.01" id="pl-total" oninput="majApercuPaiementLot()" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm font-bold"></div>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Date du paiement</label><input type="date" id="pl-date" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm"></div>
+            </div>
+            <div><label class="block text-xs font-semibold text-gray-600 mb-1">Répartition entre les vacations</label>
+                <select id="pl-mode" onchange="majApercuPaiementLot()" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm"><option value="prorata">Au prorata du montant estimé</option><option value="egal">À parts égales</option></select></div>
+            <div id="pl-apercu" class="space-y-1 text-xs"></div>
+            <p id="pl-ecart" class="text-xs text-gray-600"></p>
+            <div class="flex justify-end space-x-2 pt-1">
+                <button onclick="fermerModalPaiementLot()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-xl text-sm cursor-pointer font-medium">Annuler</button>
+                <button onclick="validerPaiementLot()" class="px-4 py-2 bg-green-600 text-white rounded-xl text-sm cursor-pointer font-medium">Confirmer</button>
+            </div>
+        </div>
     </div>
 
     <!-- Modale Calendrier de Duplication -->
@@ -743,9 +751,6 @@
         let missions = [];
         let frais = [];
         let factures = [];
-        let delaiRelancePaiement = 30;
-        let missionsSelectionneesCalendrier = [];
-        let semaineTimelineMobile = null;
 
         // --- V2 : fiabilisation des sauvegardes ---
         let chaineSauvegarde = Promise.resolve();
@@ -766,8 +771,7 @@
                 etablissements: Array.isArray(data?.etablissements) ? data.etablissements : [],
                 missions: Array.isArray(data?.missions) ? data.missions : [],
                 frais: Array.isArray(data?.frais) ? data.frais : [],
-                factures: Array.isArray(data?.factures) ? data.factures : [],
-                delaiRelancePaiement: [30, 60].includes(Number(data?.delaiRelancePaiement)) ? Number(data.delaiRelancePaiement) : 30
+                factures: Array.isArray(data?.factures) ? data.factures : []
             };
         }
 
@@ -792,7 +796,7 @@
 
             const horodatage = creerHorodatageSauvegarde();
             derniereSauvegardeLocale = horodatage;
-            const snapshot = JSON.parse(JSON.stringify({ missions, vehicules, etablissements, frais, factures, delaiRelancePaiement }));
+            const snapshot = JSON.parse(JSON.stringify({ missions, vehicules, etablissements, frais, factures }));
 
             try {
                 localStorage.setItem(
@@ -848,7 +852,6 @@
                     missions = cache.missions;
                     frais = cache.frais;
                     factures = cache.factures;
-                    delaiRelancePaiement = cache.delaiRelancePaiement;
                     derniereSauvegardeLocale = cache.derniereMiseAJour;
                     mettreAJourApplication();
                 }
@@ -886,7 +889,6 @@
                 missions = normalisees.missions;
                 frais = normalisees.frais;
                 factures = normalisees.factures;
-                delaiRelancePaiement = normalisees.delaiRelancePaiement;
                 derniereSauvegardeLocale = data.derniereMiseAJour || null;
                 try {
                     localStorage.setItem(
@@ -1172,6 +1174,15 @@
                         let textContent = await page.getTextContent();
                         texteBrut += textContent.items.map(item => item.str).join(" ") + "\n";
                     }
+                    if (texteBrut.trim().length < 50) {
+                        statutEl.innerText = "🔄 PDF scanné : lecture optique en cours...";
+                        for (let i = 1; i <= Math.min(pdf.numPages, 2); i++) {
+                            let page = await pdf.getPage(i), vp = page.getViewport({ scale: 2 }), c = document.createElement('canvas');
+                            c.width = vp.width; c.height = vp.height;
+                            await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+                            texteBrut += (await Tesseract.recognize(c, 'fra')).data.text + "\n";
+                        }
+                    }
                 } catch(err) {}
                 let readerBase64 = new FileReader();
                 readerBase64.onload = function(eUpload) {
@@ -1191,7 +1202,9 @@
             }
             statutEl.innerText = "✅ Prêt ! Vérifiez les données ci-dessous.";
             document.getElementById('resultat-audit-container').classList.remove('hidden');
-            extraireChampsLigneParLigne(texteBrut);
+            const detecte = extraireChampsLigneParLigne(texteBrut);
+            if (detecte.etab && detecte.dates) { statutEl.innerText = "✅ Période et établissement détectés : comparaison automatique."; lancerRapprochementAudit(); }
+            else statutEl.innerText = "✅ Importé. " + (detecte.dates ? "" : "Période non détectée : saisissez-la. ") + (detecte.etab ? "" : "Choisissez l'établissement.");
         }
 
         async function ouvrirBulletinScanActuel() {
@@ -1199,26 +1212,6 @@
             window.open(URL.createObjectURL(dataURItoBlob(dernierFichierScanBase64)), '_blank');
         }
 
-        function extraireChampsLigneParLigne(texte) {
-            let lignes = texte.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-            let texteGlobalLower = texte.toLowerCase();
-            let etabTrouve = etablissements.find(e => {
-                return texteGlobalLower.includes(e.nom.toLowerCase()) || (e.alias && e.alias.toLowerCase().split(',').some(a => texteGlobalLower.includes(a.trim())));
-            });
-            if (etabTrouve) document.getElementById('audit-etablissement').value = etabTrouve.nom;
-            let montantTrouve = "";
-            for (let i = 0; i < lignes.length; i++) {
-                if (lignes[i].toLowerCase().includes("net à payer") || lignes[i].toLowerCase().includes("net avant impôt") || lignes[i].toLowerCase().includes("net avant impot")) {
-                    let ext = lignes[i].match(/(\d{1,4}[\s\d]*[\.,]\d{2})/);
-                    if (ext) { montantTrouve = ext[1].replace(/\s/g, '').replace(',', '.'); break; }
-                }
-            }
-            document.getElementById('audit-montant-net').value = montantTrouve;
-            const texteDates = texte.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4}).{0,30}?(?:au|[-–])\s*(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/i);
-            if(texteDates){ const iso=(j,m,a)=>`${a}-${String(m).padStart(2,'0')}-${String(j).padStart(2,'0')}`; document.getElementById('audit-date-debut').value=iso(+texteDates[1],+texteDates[2],+texteDates[3]); document.getElementById('audit-date-fin').value=iso(+texteDates[4],+texteDates[5],+texteDates[6]); }
-            let heuresTrouve=''; const mh=texte.match(/(?:total\s*)?(?:heures|h)\s*[:=]?\s*(\d{1,3}[\.,]\d{1,2})|((?:\d{1,3}[\.,]\d{1,2}))\s*(?:heures|h)/i); if(mh) heuresTrouve=(mh[1]||mh[2]||'').replace(',','.'); if(heuresTrouve) document.getElementById('audit-heures-totales').value=heuresTrouve;
-            lancerRapprochementAutomatiqueSiComplet();
-        }
 
         function fermerAuditBulletin() {
             document.getElementById('resultat-audit-container').classList.add('hidden');
@@ -1226,38 +1219,6 @@
             dernierFichierScanBase64 = null; dernierFichierScanNom = null;
         }
 
-        function lancerRapprochementAudit() {
-            let etab = document.getElementById('audit-etablissement').value;
-            let dDebut = document.getElementById('audit-date-debut').value;
-            let dFin = document.getElementById('audit-date-fin').value;
-            let hBulletin = parseFloat(document.getElementById('audit-heures-totales').value) || 0;
-            let mBulletin = parseFloat(document.getElementById('audit-montant-net').value) || 0;
-            if (!etab) { alert("Sélectionnez un établissement."); return; }
-            
-            let missionsFiltrees = missions.filter(m => m.date >= dDebut && m.date <= dFin && m.lieu.toLowerCase() === etab.toLowerCase());
-            let totH = missionsFiltrees.reduce((acc, m) => acc + calculerHeuresMission(m), 0);
-            let totM = missionsFiltrees.reduce((acc, m) => acc + calculerMontantMission(m), 0);
-            
-            let ecartMontant = mBulletin - totM;
-            let ecartHeures = hBulletin - totH;
-            let pctMontant = totM > 0 ? Math.abs(ecartMontant / totM) * 100 : 0;
-            let pctHeures = totH > 0 ? Math.abs(ecartHeures / totH) * 100 : 0;
-
-            let couleurAlerte = (Math.max(pctMontant,pctHeures) <= 2) ? "bg-green-50 border-green-300 text-green-900" : (Math.max(pctMontant,pctHeures) <= 5 ? "bg-orange-50 border-orange-300 text-orange-900" : "bg-red-50 border-red-300 text-red-900");
-
-            let rapportEl = document.getElementById('rapport-audit-final');
-            rapportEl.classList.remove('hidden');
-            rapportEl.className = `mt-3 p-4 rounded-xl border ${couleurAlerte} space-y-2`;
-            rapportEl.innerHTML = `
-                <div class="font-bold">🔍 Résultat de l'analyse comparative</div><p class="text-[11px]">Vert ≤ 2 % · Orange > 2 % à 5 % · Rouge > 5 % (écart le plus élevé entre heures et montant).</p>
-                <p class="text-xs">
-                    Bulletin : <b>${hBulletin}h</b> | <b>${mBulletin.toFixed(2)} €</b><br>
-                    Planning : <b>${totH.toFixed(1)}h</b> | <b>${totM.toFixed(2)} €</b><br>
-                    Écart : <b>${ecartHeures.toFixed(1)}h (${pctHeures.toFixed(1)}%)</b> | <b>${ecartMontant.toFixed(2)} € (${pctMontant.toFixed(1)}%)</b>
-                </p>
-                <button onclick="validerPaiementDepuisAudit()" class="bg-green-600 text-white font-medium py-2 px-4 rounded-xl text-xs cursor-pointer shadow-sm">💰 Archiver & Valider les missions</button>
-            `;
-        }
 
         async function validerPaiementDepuisAudit() {
             let etab = document.getElementById('audit-etablissement').value;
@@ -1272,7 +1233,7 @@
                 await stockerBulletinLocal(fileKey, dernierFichierScanBase64);
             }
             missionsFiltrees.forEach(m => {
-                if (virementRecu) { m.montantPaye = calculerMontantMission(m); m.statut = 'green'; m.datePaiement = dateLocaleISO(); }
+                if (virementRecu) { m.statut = 'green'; m.datePaiement = dateLocaleISO(); }
                 m.bulletinRecu = true;
                 if (fileKey) { m.bulletinFichier = fileKey; m.bulletinNomFichier = dernierFichierScanNom; }
             });
@@ -1316,7 +1277,7 @@
             if (!nouvelleDate) return;
             let mOriginal = missions[indexMissionADupliquer];
             let nextId = missions.length > 0 ? Math.max(...missions.map(m => m.id)) + 1 : 1;
-            missions.push({ ...mOriginal, id: nextId, date: nouvelleDate, statut: 'blue', montantPaye: 0, datePaiement: null, contratSigne: false, bulletinRecu: false, bulletinFichier: null });
+            missions.push({ ...mOriginal, id: nextId, date: nouvelleDate, statut: 'blue', contratSigne: false, bulletinRecu: false, bulletinFichier: null });
             sauvegarderDonneesCloud(); fermerModalDuplication(); mettreAJourApplication();
         }
 
@@ -1382,22 +1343,17 @@
         }
 
         function naviguerPeriode(dir) {
-            if (typeVue === 'mois') dateActive.setMonth(dateActive.getMonth() + dir);
+            if (typeVue === 'mois') dateActive.setDate(1), dateActive.setMonth(dateActive.getMonth() + dir);
             else dateActive.setDate(dateActive.getDate() + (dir * 7));
             mettreAJourApplication();
         }
 
         function allerAujourdhui() { dateActive = new Date(); mettreAJourApplication(); }
-        function changerMoisRecap(dir) { dateActiveRecap.setMonth(dateActiveRecap.getMonth() + dir); selectedRecapLieux = []; genererRecapMensuel(); }
+        function changerMoisRecap(dir) { dateActiveRecap.setDate(1); dateActiveRecap.setMonth(dateActiveRecap.getMonth() + dir); selectedRecapLieux = []; genererRecapMensuel(); }
         function allerAujourdhuiRecap() { dateActiveRecap = new Date(); selectedRecapLieux = []; genererRecapMensuel(); }
         function changerAnneeGraphe(dir) { anneeGraphe += dir; genererRecapMensuel(); }
 
-        function basculerModeBrutNet() {
-            modeAffichageBrut = !modeAffichageBrut;
-            const btn = document.getElementById('btn-mode-brut-net');
-            btn.innerHTML = modeAffichageBrut ? `<span class="inline md:hidden">Brut</span><span class="hidden md:inline">Mode : Brut (sans carburant)</span>` : `<span class="inline md:hidden">Net</span><span class="hidden md:inline">Mode : Net (carburant déduit)</span>`;
-            mettreAJourApplication();
-        }
+        function basculerModeBrutNet() { modeAffichageBrut = !modeAffichageBrut; majBoutonsBrutNet(); mettreAJourApplication(); }
 
         function calculerCoutCarburantMission(m) {
             if (!m.distance || m.distance <= 0 || vehicules.length === 0) return 0;
@@ -1412,19 +1368,22 @@
             const sel = document.getElementById('pilotage-annee'); if (!sel) return;
             const annees = new Set([new Date().getFullYear()]);
             missions.forEach(m => { const a = parseInt((m.date||'').slice(0,4)); if (a) annees.add(a); });
+            frais.forEach(f => { const a = parseInt((f.date||'').slice(0,4)); if (a) annees.add(a); });
             const actuel = parseInt(sel.value); sel.innerHTML = [...annees].sort((a,b)=>b-a).map(a=>`<option value="${a}">${a}</option>`).join('');
             sel.value = annees.has(actuel) ? actuel : Math.max(...annees);
             const annee = obtenirAnneePilotage();
             const ms = missions.filter(m => (m.date||'').startsWith(String(annee)));
+            const fs = frais.filter(f => (f.date||'').startsWith(String(annee)));
             const ca = ms.reduce((s,m)=>s+calculerMontantMission(m),0);
-            const percu = ms.reduce((s,m)=>s+obtenirMontantPaye(m),0);
+            const percu = ms.reduce((s,m)=>{ const montant=calculerMontantMission(m); return s + (m.statut==='green'?montant:(m.statut==='orange'?montant/2:0)); },0);
             const km = ms.reduce((s,m)=>s+(Number(m.distance)||0),0);
             const heures = ms.reduce((s,m)=>s+calculerHeuresMission(m),0);
+            const fraisTotal = fs.reduce((s,f)=>s+(Number(f.montant)||0),0) + ms.reduce((s,m)=>s+calculerCoutCarburantMission(m),0);
             document.getElementById('pilot-ca').innerText=formatEuro(ca);
             document.getElementById('pilot-heures').innerText=heures.toFixed(1)+' h';
             document.getElementById('pilot-km').innerText=km.toLocaleString('fr-FR')+' km';
             document.getElementById('pilot-reste').innerText=formatEuro(Math.max(0,ca-percu));
-            const mensuel=document.getElementById('pilot-mensuel'); mensuel.innerHTML='';
+            document.getElementById('pilot-vide')?.classList.toggle('hidden', missions.length>0); const mensuel=document.getElementById('pilot-mensuel'); mensuel.innerHTML='';
             const kmTable=document.getElementById('pilot-km-table'); kmTable.innerHTML='';
             for(let i=0;i<12;i++){
                 const arr=ms.filter(m=>{const d=new Date(m.date+'T00:00:00'); return d.getMonth()===i;});
@@ -1436,78 +1395,227 @@
             const parE={}; ms.forEach(m=>parE[m.lieu||'Mission']=(parE[m.lieu||'Mission']||0)+calculerMontantMission(m));
             const pe=document.getElementById('pilot-etablissements'); pe.innerHTML=Object.entries(parE).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<div class="flex justify-between items-center border-b last:border-0 py-2 text-sm"><span class="font-medium truncate pr-3">${n}</span><span class="font-bold text-blue-600">${formatEuro(v)}</span></div>`).join('') || '<p class="text-sm text-gray-400">Aucune vacation.</p>';
         }
-        function ajouterFraisRapide(){
-            const date=prompt('Date du frais (AAAA-MM-JJ) :',dateLocaleISO()); if(!date) return;
-            const libelle=prompt('Libellé du frais :','Frais professionnel'); if(!libelle) return;
-            const montant=parseFloat(prompt('Montant (€) :','0')||'0'); if(!(montant>=0)) return alert('Montant invalide.');
-            frais.push({id:Date.now(),date,libelle,montant}); sauvegarderDonneesCloud(); genererPilotage();
-        }
-        function genererFactureRapide(){
-            const annee=obtenirAnneePilotage(); const etab=prompt('Établissement à facturer :'); if(!etab) return;
-            const ms=missions.filter(m=>(m.date||'').startsWith(String(annee)) && (m.lieu||'').toLowerCase()===etab.toLowerCase());
-            if(!ms.length) return alert('Aucune vacation trouvée pour cet établissement cette année.');
-            const montant=ms.reduce((s,m)=>s+calculerMontantMission(m),0); const seq=factures.filter(f=>String(f.date||'').startsWith(String(annee))).length+1;
-            const numero=`${annee}-FAC-${String(seq).padStart(3,'0')}`; factures.push({id:Date.now(),numero,date:dateLocaleISO(),etablissement:etab,montant,statut:'brouillon'}); sauvegarderDonneesCloud(); genererPilotage();
-            const w=window.open('','_blank'); if(w){w.document.write(`<html><head><title>${numero}</title></head><body style="font-family:Arial;padding:40px"><h1>Facture ${numero}</h1><p>Établissement : ${etab}</p><p>Période : année ${annee}</p><h2>Total : ${formatEuro(montant)}</h2><p>Générée depuis Suivi Vacations.</p><script>window.print()<\\/script></body></html>`);w.document.close();}
-        }
         function genererBilanAnnuel(){
             const annee=obtenirAnneePilotage(); const ms=missions.filter(m=>(m.date||'').startsWith(String(annee))); const ca=ms.reduce((s,m)=>s+calculerMontantMission(m),0); const h=ms.reduce((s,m)=>s+calculerHeuresMission(m),0); const km=ms.reduce((s,m)=>s+(Number(m.distance)||0),0); const carbu=ms.reduce((s,m)=>s+calculerCoutCarburantMission(m),0); const fs=frais.filter(f=>(f.date||'').startsWith(String(annee))).reduce((s,f)=>s+(Number(f.montant)||0),0);
-            const w=window.open('','_blank'); if(!w) return; w.document.write(`<html><head><title>Bilan ${annee}</title><style>body{font-family:Arial;padding:40px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ddd;padding:8px;text-align:left}</style></head><body><h1>Suivi Vacations — Bilan ${annee}</h1><table><tr><th>Indicateur</th><th>Valeur</th></tr><tr><td>Vacations</td><td>${ms.length}</td></tr><tr><td>Heures</td><td>${h.toFixed(1)} h</td></tr><tr><td>Chiffre d'affaires brut</td><td>${formatEuro(ca)}</td></tr><tr><td>Kilomètres</td><td>${km.toLocaleString('fr-FR')} km</td></tr><tr><td>Carburant estimé</td><td>${formatEuro(carbu)}</td></tr><tr><td>Autres frais</td><td>${formatEuro(fs)}</td></tr><tr><td>Résultat après frais</td><td>${formatEuro(Math.max(0,ca-carbu-fs))}</td></tr></table><p>Document généré le ${dateLocaleISO()}.</p><script>window.print()<\\/script></body></html>`); w.document.close();
+            const w=window.open('','_blank'); if(!w) return; w.document.write(`<html><head><title>Bilan ${annee}</title><style>body{font-family:Arial;padding:40px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ddd;padding:8px;text-align:left}</style></head><body><h1>Suivi Vacations — Bilan ${annee}</h1><table><tr><th>Indicateur</th><th>Valeur</th></tr><tr><td>Vacations</td><td>${ms.length}</td></tr><tr><td>Heures</td><td>${h.toFixed(1)} h</td></tr><tr><td>Chiffre d'affaires brut</td><td>${formatEuro(ca)}</td></tr><tr><td>Kilomètres</td><td>${km.toLocaleString('fr-FR')} km</td></tr><tr><td>Carburant estimé</td><td>${formatEuro(carbu)}</td></tr></table><p>Document généré le ${dateLocaleISO()}.</p><script>window.print()<\\/script></body></html>`); w.document.close();
         }
 
-        function obtenirMontantPaye(m) {
-            if (Number.isFinite(Number(m.montantPaye))) return Math.max(0, Number(m.montantPaye));
-            if (m.statut === 'green') return calculerMontantMission(m);
-            if (m.statut === 'orange') return calculerMontantMission(m) / 2;
-            return 0;
-        }
-        function obtenirResteMission(m) { return Math.max(0, calculerMontantMission(m) - obtenirMontantPaye(m)); }
-        function obtenirStatutPaiement(m) {
-            const total = calculerMontantMission(m), paye = obtenirMontantPaye(m);
-            if (total > 0 && paye >= total - 0.01) return 'green';
-            if (paye > 0) return 'orange';
-            return 'blue';
-        }
-        function basculerSelectionCalendrier(id, event) {
-            if (event) event.stopPropagation();
-            const n = Number(id);
-            missionsSelectionneesCalendrier = missionsSelectionneesCalendrier.includes(n)
-                ? missionsSelectionneesCalendrier.filter(x => x !== n) : [...missionsSelectionneesCalendrier, n];
+        // ================= V4 : paiement groupé, timeline par semaine, recap, audit, relances =================
+        let modeSelection = false, selectionIds = new Set(), visibles = [], semainesOuvertes = {}, moisGrapheSel = new Date().getMonth();
+        const MOIS_COURTS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+        const MOIS_LONGS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+        const BANDES = { montant: [3, 10], heures: [2, 8] }; // % d'écart : vert ≤ 1er seuil, orange ≤ 2e seuil, rouge au-delà
+
+        function dateISO(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+        function lundiISO(s) { const d = new Date(s + 'T00:00:00'); const j = d.getDay(); d.setDate(d.getDate() - (j === 0 ? 6 : j - 1)); return dateISO(d); }
+        function fmtJour(s) { const [a, m, j] = s.split('-'); return `${j}/${m}/${a}`; }
+        function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+        function montantTheorique(m) { return calculerMontantMission({ ...m, montantReel: null }); }
+        function valeurAff(m) { const v = calculerMontantMission(m); return modeAffichageBrut ? v : Math.max(0, v - calculerCoutCarburantMission(m)); }
+        function partPercue(m) { const v = valeurAff(m); return m.statut === 'green' ? v : (m.statut === 'orange' ? v / 2 : 0); }
+        function trouverEtab(lieu) { const l = (lieu || '').toLowerCase(); return etablissements.find(e => e.nom.toLowerCase() === l || (e.alias || '').toLowerCase().split(',').some(a => a.trim() && a.trim() === l)); }
+
+        function majBoutonsBrutNet() { document.querySelectorAll('.btn-brut-net').forEach(b => { b.textContent = modeAffichageBrut ? 'Affichage : Brut' : 'Affichage : Net (carburant déduit)'; }); }
+
+        // ---------- Sélection de vacations + paiement groupé ----------
+        function classeSel(m) { return selectionIds.has(m.id) ? 'ring-4 ring-yellow-300' : (modeSelection && m.statut === 'green' ? 'opacity-40' : ''); }
+        function basculerModeSelection() { modeSelection = !modeSelection; selectionIds.clear(); mettreAJourApplication(); }
+        function clicMission(e, id, idx) {
+            e.stopPropagation();
+            if (!modeSelection) { ouvrirModalEdition(idx); return; }
+            const m = missions[idx]; if (!m || m.statut === 'green') return;
+            selectionIds.has(id) ? selectionIds.delete(id) : selectionIds.add(id);
             mettreAJourApplication();
         }
-        function ouvrirPaiementSelectionCalendrier() {
-            const selection = missions.filter(m => missionsSelectionneesCalendrier.includes(Number(m.id)));
-            if (!selection.length) return;
-            const total = selection.reduce((s,m)=>s+calculerMontantMission(m),0);
-            const montant = parseFloat(prompt(`Paiement reçu pour ${selection.length} vacation(s).\nMontant total réellement reçu (€) :`, total.toFixed(2)) || '');
-            if (!Number.isFinite(montant) || montant < 0) return;
-            const parMission = selection.length ? montant / selection.length : 0;
-            selection.forEach(m => {
-                m.montantPaye = Math.min(calculerMontantMission(m), obtenirMontantPaye(m) + parMission);
-                m.statut = obtenirStatutPaiement(m);
-                m.datePaiement = dateLocaleISO();
-            });
-            missionsSelectionneesCalendrier = [];
+        function clicJour(d) { if (!modeSelection) ouvrirModalAjout(d); }
+        function selectionnerParLieu(v) {
+            if (!v) return;
+            visibles.filter(m => m.statut !== 'green' && (v === '__tout__' || m.lieu === v)).forEach(m => selectionIds.add(m.id));
+            mettreAJourApplication();
+        }
+        function majBarreSelection() {
+            const btn = document.getElementById('btn-mode-selection');
+            if (btn) {
+                btn.textContent = modeSelection ? '✖ Quitter la sélection' : '☑️ Sélectionner des vacations (paiement)';
+                btn.className = modeSelection ? 'px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold bg-yellow-100 text-yellow-800 border border-yellow-300 cursor-pointer' : 'px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 cursor-pointer';
+            }
+            const bar = document.getElementById('barre-selection'); if (!bar) return;
+            bar.classList.toggle('hidden', !modeSelection || ongletActif !== 'planning');
+            if (!modeSelection) return;
+            const sel = missions.filter(m => selectionIds.has(m.id));
+            document.getElementById('sel-count').innerText = sel.length;
+            document.getElementById('sel-total').innerText = formatEuro(sel.reduce((s, m) => s + calculerMontantMission(m), 0));
+            document.getElementById('btn-sel-valider').disabled = sel.length === 0;
+            document.getElementById('btn-sel-valider').classList.toggle('opacity-40', sel.length === 0);
+            const nonPayes = visibles.filter(m => m.statut !== 'green'), lieux = [...new Set(nonPayes.map(m => m.lieu))];
+            document.getElementById('sel-lieu').innerHTML = `<option value="">Sélection rapide…</option>` +
+                (lieux.length ? `<option value="__tout__">Tout le non payé affiché (${nonPayes.length})</option>` : '') +
+                lieux.map(l => `<option value="${esc(l)}">${esc(l)} (${nonPayes.filter(m => m.lieu === l).length} non payées)</option>`).join('');
+        }
+        function msLot() { return missions.filter(m => selectionIds.has(m.id)).sort((a, b) => a.date.localeCompare(b.date)); }
+        function repartirPaiement(ms, total, mode) {
+            if (!ms.length) return [];
+            const w = ms.map(m => mode === 'egal' ? 1 : Math.max(montantTheorique(m), 0.0001)), S = w.reduce((a, b) => a + b, 0);
+            let reste = Math.round(total * 100);
+            return w.map((x, i) => { if (i === ms.length - 1) return reste / 100; const c = Math.round(total * 100 * x / S); reste -= c; return c / 100; });
+        }
+        function ouvrirModalPaiementLot() {
+            const ms = msLot(); if (!ms.length) return;
+            const est = ms.reduce((s, m) => s + calculerMontantMission(m), 0);
+            document.getElementById('pl-resume').innerText = `${ms.length} vacation(s) sélectionnée(s) — montant estimé : ${formatEuro(est)}`;
+            document.getElementById('pl-total').value = est.toFixed(2);
+            document.getElementById('pl-date').value = dateLocaleISO();
+            document.getElementById('modal-paiement-lot').classList.remove('hidden');
+            majApercuPaiementLot();
+        }
+        function fermerModalPaiementLot() {
+            document.getElementById('modal-paiement-lot').classList.add('hidden');
+            if (ongletActif !== 'planning') { modeSelection = false; selectionIds.clear(); mettreAJourApplication(); }
+        }
+        function majApercuPaiementLot() {
+            const ms = msLot(), total = parseFloat(document.getElementById('pl-total').value) || 0;
+            const parts = repartirPaiement(ms, total, document.getElementById('pl-mode').value);
+            document.getElementById('pl-apercu').innerHTML = ms.map((m, i) => `<div class="flex justify-between gap-2 bg-gray-50 rounded-lg px-3 py-1.5"><span class="truncate">${fmtJour(m.date)} · ${esc(m.lieu)} · ${m.heureDebut}-${m.heureFin}</span><b class="shrink-0">${parts[i].toFixed(2)} €</b></div>`).join('');
+            const est = ms.reduce((s, m) => s + montantTheorique(m), 0), ec = total - est;
+            document.getElementById('pl-ecart').innerHTML = `Estimé d'après vos taux : ${formatEuro(est)} · écart : <b class="${ec < -0.5 ? 'text-red-600' : 'text-green-700'}">${ec >= 0 ? '+' : ''}${ec.toFixed(2)} €</b>`;
+        }
+        function validerPaiementLot() {
+            const ms = msLot(), total = parseFloat(document.getElementById('pl-total').value);
+            if (!ms.length || !(total > 0)) { alert("Saisissez le montant réellement reçu."); return; }
+            const parts = repartirPaiement(ms, total, document.getElementById('pl-mode').value);
+            const g = 'pay_' + Date.now(), d = document.getElementById('pl-date').value || dateLocaleISO();
+            ms.forEach((m, i) => { m.montantReel = parts[i]; m.statut = 'green'; m.datePaiement = d; m.paiementGroupe = g; });
+            modeSelection = false; selectionIds.clear();
+            document.getElementById('modal-paiement-lot').classList.add('hidden');
             sauvegarderDonneesCloud(); mettreAJourApplication();
         }
-        function viderSelectionCalendrier() { missionsSelectionneesCalendrier=[]; mettreAJourApplication(); }
-        function sauvegarderReglageDelaiPaiement() {
-            const v = Number(document.getElementById('reglage-delai-paiement')?.value);
-            if ([30,60].includes(v)) { delaiRelancePaiement=v; sauvegarderDonneesCloud(); verifierNotificationsAlertes(); }
+
+        // ---------- Timeline découpée par semaine ----------
+        function carteListe(m) {
+            const idx = missions.findIndex(x => x.id === m.id), h = calculerHeuresMission(m);
+            const st = m.statut === 'green' ? ['Payé', 'bg-green-100 text-green-700', 'bg-green-500'] : (m.statut === 'orange' ? ['Partiel', 'bg-orange-100 text-orange-700', 'bg-orange-500'] : ['À régler', 'bg-blue-100 text-blue-700', 'bg-blue-600']);
+            return `<div onclick="clicMission(event,${m.id},${idx})" class="${classeSel(m)} flex items-stretch bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden cursor-pointer"><span class="w-1.5 ${st[2]}"></span><div class="flex-1 p-3 flex justify-between gap-2"><div class="min-w-0"><div class="font-bold text-sm text-gray-900 truncate">${esc(m.lieu)}</div><div class="text-xs text-gray-500">🕒 ${m.heureDebut}–${m.heureFin} · ${h.toFixed(1)} h</div></div><div class="text-right shrink-0"><div class="font-extrabold text-sm text-blue-600">${valeurAff(m).toFixed(2)} €</div><span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${st[1]}">${st[0]}</span></div></div></div>`;
         }
-        function genererJustificatifKilometres() {
+        function genererListeSemaines(liste) {
+            if (!liste.length) return `<div class="bg-white p-6 rounded-2xl border border-gray-200 text-center text-gray-400 text-sm italic">Aucune vacation sur cette période.</div>`;
+            const auj = dateLocaleISO(), sem = {};
+            liste.slice().sort((a, b) => a.date.localeCompare(b.date) || (a.heureDebut || '').localeCompare(b.heureDebut || '')).forEach(m => { (sem[lundiISO(m.date)] = sem[lundiISO(m.date)] || []).push(m); });
+            return Object.keys(sem).sort().map(k => {
+                const ms = sem[k], d1 = new Date(k + 'T00:00:00'), d2 = new Date(d1); d2.setDate(d1.getDate() + 6);
+                const h = ms.reduce((s, m) => s + calculerHeuresMission(m), 0), tot = ms.reduce((s, m) => s + valeurAff(m), 0), nb = ms.filter(m => m.statut !== 'green').length;
+                const ouvert = semainesOuvertes[k] !== undefined ? semainesOuvertes[k] : !(dateISO(d2) < auj && nb === 0);
+                const jours = {}; ms.forEach(m => (jours[m.date] = jours[m.date] || []).push(m));
+                const corps = Object.keys(jours).sort().map(j => {
+                    const d = new Date(j + 'T00:00:00'), aujd = j === auj;
+                    return `<div class="flex gap-3"><div class="w-12 shrink-0 text-center pt-1"><div class="text-[10px] font-semibold ${aujd ? 'text-blue-600' : 'text-gray-400'}">${['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'][d.getDay()]}</div><div class="text-lg font-extrabold ${aujd ? 'bg-blue-600 text-white rounded-lg' : 'text-gray-800'}">${d.getDate()}</div></div><div class="flex-1 space-y-2">${jours[j].map(carteListe).join('')}</div></div>`;
+                }).join('');
+                return `<details ${ouvert ? 'open' : ''} ontoggle="semainesOuvertes['${k}']=this.open" class="bg-gray-50 rounded-2xl border border-gray-200"><summary class="cursor-pointer p-3 flex justify-between items-center gap-2"><div><div class="font-bold text-sm text-gray-800">Semaine du ${d1.getDate()} ${MOIS_COURTS[d1.getMonth()]} au ${d2.getDate()} ${MOIS_COURTS[d2.getMonth()]}</div><div class="text-[11px] text-gray-500">${h.toFixed(1)} h · ${ms.length} vacation(s)</div></div><div class="text-right"><div class="font-extrabold text-sm text-gray-800">${tot.toFixed(2)} €</div><div class="text-[11px] font-semibold ${nb ? 'text-blue-600' : 'text-green-600'}">${nb ? nb + ' à régler' : '✓ tout payé'}</div></div></summary><div class="p-3 pt-1 space-y-3">${corps}</div></details>`;
+            }).join('<div class="h-2"></div>');
+        }
+
+        // ---------- Récap : clic sur une barre + cartes ----------
+        function selectionnerMoisGraphe(i) { moisGrapheSel = i; genererRecapMensuel(); }
+        function allerAuMoisRecap(i) { dateActiveRecap = new Date(anneeGraphe, i, 1); selectedRecapLieux = []; genererRecapMensuel(); const el = document.getElementById('cartes-recap'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' }); }
+        function payerLieuDetail(lieu) {
+            const a = dateActiveRecap.getFullYear(), mo = dateActiveRecap.getMonth();
+            const ids = missions.filter(m => { const [y, mm] = m.date.split('-').map(Number); return m.lieu === lieu && y === a && mm - 1 === mo && m.statut !== 'green'; }).map(m => m.id);
+            if (!ids.length) { alert("Toutes les vacations de ce mois sont déjà payées."); return; }
+            selectionIds = new Set(ids); modeSelection = true; dateActive = new Date(a, mo, 1); typeVue = 'mois';
+            changerTypeVue('mois'); changerOnglet('planning');
+        }
+
+        // ---------- Pilotage : relevé kilométrique ----------
+        function genererAttestationKm() {
             const annee = obtenirAnneePilotage();
-            const ms = missions.filter(m => String(m.date||'').startsWith(String(annee)));
-            const noms=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-            let total=0, rows='';
-            for(let i=0;i<12;i++) { const arr=ms.filter(m=>new Date(m.date+'T00:00:00').getMonth()===i); const km=arr.reduce((a,m)=>a+(Number(m.distance)||0),0); total+=km; rows += `<tr><td>${noms[i]}</td><td>${km.toLocaleString('fr-FR')} km</td><td>${arr.length}</td></tr>`; }
-            const w=window.open('','_blank'); if(!w) return;
-            w.document.write(`<html><head><title>Justificatif kilomètres ${annee}</title><style>body{font-family:Arial;padding:40px}table{border-collapse:collapse;width:100%;margin-top:20px}td,th{border-bottom:1px solid #ddd;padding:10px;text-align:left}</style></head><body><h1>Justificatif kilométrique annuel — ${annee}</h1><p>Document établi à partir des vacations enregistrées dans Suivi Vacations.</p><table><thead><tr><th>Mois</th><th>Kilomètres</th><th>Vacations</th></tr></thead><tbody>${rows}</tbody></table><h2>Total annuel : ${total.toLocaleString('fr-FR')} km</h2><p>Édité le ${dateLocaleISO()}.</p><script>window.print()<\/script></body></html>`); w.document.close();
+            const ms = missions.filter(m => (m.date || '').startsWith(String(annee)) && Number(m.distance) > 0).sort((a, b) => a.date.localeCompare(b.date));
+            if (!ms.length) { alert("Aucun kilométrage saisi pour " + annee + "."); return; }
+            const email = (auth && auth.currentUser && auth.currentUser.email) || '';
+            let tot = 0; const parMois = Array(12).fill(0);
+            const lignes = ms.map(m => { const v = vehicules.find(x => x.id == m.vehiculeId), km = Number(m.distance); tot += km; parMois[Number(m.date.slice(5, 7)) - 1] += km; return `<tr><td>${fmtJour(m.date)}</td><td>${esc(m.lieu)}</td><td>${esc(v ? v.nom : '—')}</td><td style="text-align:right">${km.toLocaleString('fr-FR')} km</td></tr>`; }).join('');
+            const recap = parMois.map((k, i) => k ? `<tr><td>${MOIS_LONGS[i]}</td><td style="text-align:right">${k.toLocaleString('fr-FR')} km</td></tr>` : '').join('');
+            const w = window.open('', '_blank'); if (!w) { alert("Autorisez les fenêtres pop-up pour imprimer."); return; }
+            w.document.write(`<html><head><title>Relevé kilométrique ${annee}</title><style>body{font-family:Arial;padding:40px;color:#222}table{border-collapse:collapse;width:100%;margin-bottom:24px}td,th{border-bottom:1px solid #ddd;padding:7px;text-align:left;font-size:13px}h1{margin-bottom:4px}</style></head><body><h1>Relevé kilométrique professionnel ${annee}</h1><p>Établi pour : ${esc(email)}<br>Édité le ${fmtJour(dateLocaleISO())} depuis Suivi Vacations. Document déclaratif, établi à partir des distances aller-retour saisies pour chaque vacation.</p><h2>Total annuel : ${tot.toLocaleString('fr-FR')} km (${ms.length} déplacements)</h2><h3>Par mois</h3><table>${recap}</table><h3>Détail des déplacements</h3><table><tr><th>Date</th><th>Établissement</th><th>Véhicule</th><th style="text-align:right">Distance A-R</th></tr>${lignes}</table><script>window.onload=function(){window.print()}<\/script></body></html>`);
+            w.document.close();
         }
-        function lancerRapprochementAutomatiqueSiComplet() {
-            const d1=document.getElementById('audit-date-debut')?.value, d2=document.getElementById('audit-date-fin')?.value, h=document.getElementById('audit-heures-totales')?.value, m=document.getElementById('audit-montant-net')?.value;
-            if (d1 && d2 && h && m && document.getElementById('audit-etablissement')?.value) lancerRapprochementAudit();
+
+        // ---------- Documents : extraction de la période + écarts ----------
+        function extraireDatesPeriode(t) {
+            const iso = (j, m, a) => `${a.length === 2 ? '20' + a : a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+            const D = '(\\d{1,2})[\\/.\\-](\\d{1,2})[\\/.\\-](\\d{2,4})';
+            let r = t.match(new RegExp('du\\s+' + D + '\\s+au\\s+' + D, 'i')) || t.match(new RegExp('p[ée]riode\\D{0,30}' + D + '\\D{1,25}' + D, 'i'));
+            if (r) return [iso(r[1], r[2], r[3]), iso(r[4], r[5], r[6])];
+            const noms = ['janvier', 'f[ée]vrier', 'mars', 'avril', 'mai', 'juin', 'juillet', 'ao[uû]t', 'septembre', 'octobre', 'novembre', 'd[ée]cembre'];
+            r = t.match(new RegExp('(' + noms.join('|') + ')\\s+(20\\d{2})', 'i'));
+            if (r) { const i = noms.findIndex(n => new RegExp('^' + n + '$', 'i').test(r[1])), a = Number(r[2]); return [dateISO(new Date(a, i, 1)), dateISO(new Date(a, i + 1, 0))]; }
+            return null;
         }
+        function extraireChampsLigneParLigne(texte) {
+            const txt = texte.replace(/\s+/g, ' '), low = txt.toLowerCase();
+            const etab = etablissements.find(e => low.includes(e.nom.toLowerCase()) || (e.alias && e.alias.toLowerCase().split(',').some(a => a.trim() && low.includes(a.trim()))));
+            if (etab) document.getElementById('audit-etablissement').value = etab.nom;
+            let net = '';
+            for (const re of [/net\s+(?:à|a)\s+payer\s+avant\s+imp[oô]ts?\D{0,40}(\d[\d\s]{0,8}[.,]\d{2})/i, /net\s+avant\s+imp[oô]ts?\D{0,40}(\d[\d\s]{0,8}[.,]\d{2})/i, /net\s+(?:à|a)\s+payer\D{0,40}(\d[\d\s]{0,8}[.,]\d{2})/i]) {
+                const r = txt.match(re); if (r) { net = r[1].replace(/\s/g, '').replace(',', '.'); break; }
+            }
+            document.getElementById('audit-montant-net').value = net;
+            const rh = txt.match(/(?:nombre\s+d['’]?\s*heures?|heures?\s+(?:travaill[ée]es?|normales?|r[ée]mun[ée]r[ée]es?)|total\s+heures?)\D{0,30}(\d{1,3}(?:[.,]\d{1,2})?)/i);
+            document.getElementById('audit-heures-totales').value = rh ? rh[1].replace(',', '.') : '';
+            const p = extraireDatesPeriode(txt);
+            document.getElementById('audit-date-debut').value = p ? p[0] : '';
+            document.getElementById('audit-date-fin').value = p ? p[1] : '';
+            document.getElementById('rapport-audit-final').classList.add('hidden');
+            return { etab: !!etab, dates: !!p };
+        }
+        function lancerRapprochementAudit() {
+            const etab = document.getElementById('audit-etablissement').value, dDebut = document.getElementById('audit-date-debut').value, dFin = document.getElementById('audit-date-fin').value;
+            const hB = parseFloat(document.getElementById('audit-heures-totales').value) || 0, mB = parseFloat(document.getElementById('audit-montant-net').value) || 0;
+            const coef = parseFloat(document.getElementById('audit-coef').value) || 0;
+            if (!etab) { alert("Sélectionnez un établissement."); return; }
+            if (!dDebut || !dFin) { alert("Indiquez la période couverte par le bulletin."); return; }
+            const ms = missions.filter(m => m.date >= dDebut && m.date <= dFin && m.lieu.toLowerCase() === etab.toLowerCase()).sort((a, b) => a.date.localeCompare(b.date));
+            const totH = ms.reduce((s, m) => s + calculerHeuresMission(m), 0), totM = ms.reduce((s, m) => s + montantTheorique(m), 0) * (1 - coef / 100);
+            const pct = (b, p) => p > 0 ? Math.abs(b - p) / p * 100 : (b > 0 ? 100 : 0);
+            const niv = (p, b) => p <= b[0] ? 0 : (p <= b[1] ? 1 : 2);
+            const pH = pct(hB, totH), pM = pct(mB, totM);
+            const nH = hB > 0 ? niv(pH, BANDES.heures) : null, nM = mB > 0 ? niv(pM, BANDES.montant) : null;
+            const global = ms.length === 0 ? 2 : Math.max(nH ?? 0, nM ?? 0);
+            const cls = ['bg-green-50 border-green-300 text-green-900', 'bg-orange-50 border-orange-300 text-orange-900', 'bg-red-50 border-red-300 text-red-900'];
+            const pastille = n => n === null ? '<span class="text-gray-400">non lu</span>' : ['🟢 conforme', '🟠 à vérifier', '🔴 écart important'][n];
+            const verdict = ['Le bulletin correspond à votre planning.', 'Petit écart : vérifiez les détails ci-dessous.', ms.length === 0 ? "Aucune vacation dans votre planning sur cette période." : "Écart important : contactez l'établissement ou corrigez votre planning."][global];
+            const el = document.getElementById('rapport-audit-final');
+            el.className = `mt-3 p-4 rounded-xl border ${cls[global]} space-y-2 text-sm`;
+            el.innerHTML = `<div class="font-bold">🔍 ${verdict}</div>
+                <div class="text-xs space-y-1">
+                    <div>⏱️ Heures — bulletin : <b>${hB ? hB.toFixed(1) + ' h' : '?'}</b> · planning : <b>${totH.toFixed(1)} h</b> (${ms.length} vacation${ms.length > 1 ? 's' : ''}) · écart ${(hB - totH).toFixed(1)} h (${pH.toFixed(1)} %) ${pastille(nH)}</div>
+                    <div>💶 Net — bulletin : <b>${mB ? mB.toFixed(2) + ' €' : '?'}</b> · planning estimé : <b>${totM.toFixed(2)} €</b> · écart ${(mB - totM).toFixed(2)} € (${pM.toFixed(1)} %) ${pastille(nM)}</div>
+                    ${!hB ? '<div class="text-gray-500">Heures du bulletin non détectées : saisissez-les pour les comparer.</div>' : ''}
+                    <div class="text-gray-600">Vacations prises en compte : ${ms.map(m => fmtJour(m.date).slice(0, 5) + ' (' + calculerHeuresMission(m).toFixed(1) + ' h)').join(', ') || 'aucune'}</div>
+                    <div class="text-gray-500">Gammes — montant : 🟢 ≤ ${BANDES.montant[0]} % · 🟠 ≤ ${BANDES.montant[1]} % · 🔴 au-delà. Heures : 🟢 ≤ ${BANDES.heures[0]} % · 🟠 ≤ ${BANDES.heures[1]} % · 🔴 au-delà.</div>
+                </div>
+                <button onclick="validerPaiementDepuisAudit()" class="bg-green-600 text-white font-medium py-2 px-4 rounded-xl text-xs cursor-pointer shadow-sm">💰 Archiver & Valider les missions</button>`;
+        }
+
+        // ---------- Alertes de retard + relance e-mail ----------
+        function impayesAnciens(lieu) {
+            const auj = new Date(dateLocaleISO() + 'T00:00:00');
+            return missions.filter(m => m.lieu === lieu && m.statut !== 'green' && Math.floor((auj - new Date(m.date + 'T00:00:00')) / 864e5) >= 30).sort((a, b) => a.date.localeCompare(b.date));
+        }
+        function messageRelance(lieu) {
+            const ms = impayesAnciens(lieu), h = ms.reduce((s, m) => s + calculerHeuresMission(m), 0).toFixed(1).replace('.', ',');
+            const lignes = ms.map(m => `- le ${fmtJour(m.date)}, de ${m.heureDebut} à ${m.heureFin} (${calculerHeuresMission(m).toFixed(1).replace('.', ',')} h)`).join('\n');
+            return { sujet: `Relance : ${ms.length} vacation${ms.length > 1 ? 's' : ''} non réglée${ms.length > 1 ? 's' : ''}`, corps: `Bonjour,\n\nSauf erreur de ma part, les vacations suivantes, effectuées au sein de votre établissement (${lieu}), ne m'ont pas été réglées à ce jour :\n\n${lignes}\n\nSoit un total de ${h} h.\n\nMerci de bien vouloir régulariser la situation dans les meilleurs délais. Je reste à votre disposition pour tout renseignement complémentaire.\n\nCordialement,` };
+        }
+        function ajouterEmailEtab(lieu) { const e = trouverEtab(lieu); if (e) ouvrirModalEditionEtablissement(etablissements.indexOf(e)); else ouvrirModalEtablissement(lieu); }
+        function relancerEtablissement(lieu) {
+            const e = trouverEtab(lieu); if (!e || !e.email) { ajouterEmailEtab(lieu); return; }
+            const r = messageRelance(lieu);
+            e.derniereRelance = dateLocaleISO(); sauvegarderDonneesCloud();
+            window.location.href = `mailto:${e.email.trim()}?subject=${encodeURIComponent(r.sujet)}&body=${encodeURIComponent(r.corps)}`;
+            setTimeout(mettreAJourApplication, 400);
+        }
+        function copierRelance(lieu) { const r = messageRelance(lieu), t = r.sujet + '\n\n' + r.corps; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => alert('Message copié.')).catch(() => prompt('Copiez le message :', t)); }
+        function payerDepuisAlerte(lieu) { selectionIds = new Set(impayesAnciens(lieu).map(m => m.id)); modeSelection = true; ouvrirModalPaiementLot(); }
+
         function changerOnglet(nom) {
             ongletActif = nom;
             ['pilotage', 'planning', 'recap', 'documents', 'notifications', 'parametres'].forEach(o => {
@@ -1516,13 +1624,12 @@
                 let btn = document.getElementById('tab-' + o);
                 if (btn) btn.className = o === nom ? "px-3.5 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 transition cursor-pointer flex items-center space-x-1.5" : "px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer";
                 let mBtn = document.getElementById('m-tab-' + o);
-                if (mBtn) mBtn.className = o === nom ? "flex flex-col items-center text-blue-600 font-semibold text-[11px] space-y-1 relative" : "flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative";
+                if (mBtn) mBtn.className = o === nom ? "flex-1 flex flex-col items-center text-blue-600 font-semibold text-[11px] space-y-1 relative" : "flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative";
             });
-            document.getElementById('btn-ajouter-global').classList.toggle('hidden', nom !== 'planning');
-            document.getElementById('btn-mode-brut-net').classList.toggle('hidden', nom !== 'planning');
+            window.scrollTo(0, 0);
             if (nom === 'pilotage') { genererPilotage(); }
             else if (nom === 'documents') { initialiserDatesExportParDefaut(); peuplerSelectAuditEtablissements(); genererDossiersArchives(); }
-            else if (nom === 'parametres') { genererListeVehicules(); genererListeEtablissements(); const d=document.getElementById('reglage-delai-paiement'); if(d)d.value=String(delaiRelancePaiement); }
+            else if (nom === 'parametres') { genererListeVehicules(); genererListeEtablissements(); }
             mettreAJourApplication();
         }
 
@@ -1742,10 +1849,8 @@
                 let idMission = idx >= 0 ? missions[idx].id : (missions.length > 0 ? Math.max(...missions.map(m => Number(m.id) || 0)) + 1 : 1);
                 let bulletinFichier = idx >= 0 ? missions[idx].bulletinFichier : null;
                 let bulletinNomFichier = idx >= 0 ? missions[idx].bulletinNomFichier : null;
-                let montantPaye = idx >= 0 && Number.isFinite(Number(missions[idx].montantPaye)) ? Number(missions[idx].montantPaye) : (idx >= 0 && missions[idx].statut === 'green' ? calculerMontantMission(missions[idx]) : (idx >= 0 && missions[idx].statut === 'orange' ? calculerMontantMission(missions[idx]) / 2 : 0));
-                let datePaiement = idx >= 0 ? (missions[idx].datePaiement || null) : null;
 
-                let nouv = { id: idMission, date, lieu, heureDebut, heureFin, pause, taux, tauxNuit, heures, montantReel, statut, vehiculeId, distance, commentaire, contratSigne, bulletinRecu, bulletinFichier, bulletinNomFichier, montantPaye, datePaiement };
+                let nouv = { id: idMission, date, lieu, heureDebut, heureFin, pause, taux, tauxNuit, heures, montantReel, statut, vehiculeId, distance, commentaire, contratSigne, bulletinRecu, bulletinFichier, bulletinNomFichier, datePaiement: idx >= 0 ? missions[idx].datePaiement : undefined, paiementGroupe: idx >= 0 ? missions[idx].paiementGroupe : undefined };
                 if (idx === -1) missions.push(nouv); else if (missions[idx]) missions[idx] = nouv; else { alert("Cette vacation n'existe plus. Rechargez la page."); return; }
 
                 let etabExistant = etablissements.some(e => e.nom.toLowerCase() === lieu.toLowerCase() || (e.alias && e.alias.toLowerCase().split(',').some(a => a.trim() === lieu.toLowerCase())));
@@ -1775,7 +1880,7 @@
             let annee = dateActiveRecap.getFullYear(), mois = dateActiveRecap.getMonth();
             let allPaid = true;
             missions.forEach(m => { let [a, mm] = m.date.split('-').map(Number); if (m.lieu === lieu && a === annee && (mm - 1) === mois && m.statut !== 'green') allPaid = false; });
-            missions.forEach(m => { let [a, mm] = m.date.split('-').map(Number); if (m.lieu === lieu && a === annee && (mm - 1) === mois) { m.statut = allPaid ? 'blue' : 'green'; m.montantPaye = allPaid ? 0 : calculerMontantMission(m); m.datePaiement = allPaid ? null : dateLocaleISO(); } });
+            missions.forEach(m => { let [a, mm] = m.date.split('-').map(Number); if (m.lieu === lieu && a === annee && (mm - 1) === mois) m.statut = allPaid ? 'blue' : 'green'; });
             sauvegarderDonneesCloud(); mettreAJourApplication();
         }
 
@@ -1795,145 +1900,77 @@
         function fermerModalConfirmationRecap() { document.getElementById('modal-confirmation-recap').classList.add('hidden'); }
         function validerPaiementEnMasseRecap() {
             let annee = dateActiveRecap.getFullYear(), mois = dateActiveRecap.getMonth();
-            const sel=missions.filter(m=>{let [a,mm]=m.date.split('-').map(Number); return a===annee && mm-1===mois && selectedRecapLieux.includes(m.lieu) && obtenirResteMission(m)>0;});
-            if(!sel.length){ selectedRecapLieux=[]; fermerModalConfirmationRecap(); mettreAJourApplication(); return; }
-            const total=sel.reduce((s,m)=>s+obtenirResteMission(m),0);
-            const montant=parseFloat(prompt(`Paiement reçu pour ${sel.length} vacation(s).\nMontant total réellement reçu (€) :`, total.toFixed(2))||'');
-            if(!Number.isFinite(montant)||montant<0) return;
-            const part=montant/sel.length;
-            sel.forEach(m=>{m.montantPaye=Math.min(calculerMontantMission(m),obtenirMontantPaye(m)+part);m.statut=obtenirStatutPaiement(m);m.datePaiement=dateLocaleISO();});
-            selectedRecapLieux=[]; sauvegarderDonneesCloud(); fermerModalConfirmationRecap(); mettreAJourApplication();
+            missions.forEach(m => { let [a, mm] = m.date.split('-').map(Number); if (a === annee && (mm - 1) === mois && selectedRecapLieux.includes(m.lieu)) m.statut = 'green'; });
+            selectedRecapLieux = []; sauvegarderDonneesCloud(); fermerModalConfirmationRecap(); mettreAJourApplication();
         }
 
         function basculerContratMission(idx) { missions[idx].contratSigne = !missions[idx].contratSigne; sauvegarderDonneesCloud(); mettreAJourApplication(); }
         function basculerBulletinMission(idx) { missions[idx].bulletinRecu = !missions[idx].bulletinRecu; sauvegarderDonneesCloud(); mettreAJourApplication(); }
 
-        function afficherDetailMoisGraphe(index) {
-            const annee=anneeGraphe, ms=missions.filter(m=>{const d=new Date(m.date+'T00:00:00');return d.getFullYear()===annee&&d.getMonth()===index;});
-            const total=ms.reduce((s,m)=>s+calculerMontantMission(m),0), paye=ms.reduce((s,m)=>s+obtenirMontantPaye(m),0), reste=Math.max(0,total-paye);
-            const el=document.getElementById('detail-graphe-mois'); if(!el)return;
-            el.classList.remove('hidden'); el.innerHTML=`<div class="flex flex-wrap gap-4"><b>${['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'][index]} ${annee}</b><span>Total : <b>${total.toFixed(2)} €</b></span><span>Déjà payé : <b class="text-green-700">${paye.toFixed(2)} €</b></span><span>Reste : <b class="text-orange-700">${reste.toFixed(2)} €</b></span></div>`;
-        }
-
         function genererRecapMensuel() {
             let annee = dateActiveRecap.getFullYear(), mois = dateActiveRecap.getMonth();
-            let nomsMois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-            document.getElementById('titre-mois-recap').innerText = `${nomsMois[mois]} ${annee}`;
+            document.getElementById('titre-mois-recap').innerText = `${MOIS_LONGS[mois]} ${annee}`;
             document.getElementById('annee-graphe-titre').innerText = anneeGraphe;
 
-            let diagrammeEl = document.getElementById('diagramme-barres');
-            diagrammeEl.innerHTML = '';
-            let gainsParMois = Array(12).fill(0);
-            let percusParMois = Array(12).fill(0);
+            // Graphique annuel (cliquable)
+            const gains = Array(12).fill(0), percus = Array(12).fill(0);
+            missions.forEach(m => { const [a, mm] = m.date.split('-').map(Number); if (a === anneeGraphe) { gains[mm - 1] += valeurAff(m); percus[mm - 1] += partPercue(m); } });
+            const max = Math.max(...gains, 100), abr = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"];
+            document.getElementById('diagramme-barres').innerHTML = gains.map((g, i) => {
+                const hg = g > 0 ? Math.max(g / max * 100, 4) : 1, hp = percus[i] > 0 ? Math.max(percus[i] / max * 100, 4) : 0, sel = i === moisGrapheSel;
+                return `<button type="button" onclick="selectionnerMoisGraphe(${i})" class="flex-1 min-w-0 h-full flex flex-col items-center justify-end cursor-pointer ${sel ? '' : 'opacity-60'}"><div class="flex-1 w-full max-w-[24px] relative bg-gray-100 rounded-t overflow-hidden ${sel ? 'ring-2 ring-blue-400' : ''}"><div class="absolute bottom-0 w-full bg-blue-500" style="height:${hg}%"></div><div class="absolute bottom-0 w-full bg-green-500" style="height:${hp}%"></div></div><span class="text-[10px] mt-1 ${sel ? 'font-bold text-blue-700' : 'text-gray-400'}">${abr[i]}</span></button>`;
+            }).join('');
+            const i = moisGrapheSel, msG = missions.filter(m => { const [a, mm] = m.date.split('-').map(Number); return a === anneeGraphe && mm - 1 === i; });
+            const T = gains[i], P = percus[i], R = Math.max(0, T - P), parLieu = {};
+            msG.forEach(m => { const o = parLieu[m.lieu] = parLieu[m.lieu] || { t: 0, p: 0 }; o.t += valeurAff(m); o.p += partPercue(m); });
+            document.getElementById('detail-mois-graphe').innerHTML = msG.length === 0
+                ? `<span class="text-gray-400 italic">${MOIS_LONGS[i]} ${anneeGraphe} : aucune vacation. Touchez une autre barre.</span>`
+                : `<div class="flex flex-wrap justify-between items-center gap-2"><b class="text-gray-800">${MOIS_LONGS[i]} ${anneeGraphe}</b><button onclick="allerAuMoisRecap(${i})" class="text-xs text-blue-600 font-semibold cursor-pointer">Voir le détail du mois →</button></div>
+                   <div class="grid grid-cols-3 gap-2 mt-3 text-center"><div><div class="text-[11px] text-gray-500">Total</div><b>${formatEuro(T)}</b></div><div><div class="text-[11px] text-gray-500">Déjà payé</div><b class="text-green-600">${formatEuro(P)}</b></div><div><div class="text-[11px] text-gray-500">Reste à payer</div><b class="${R > 0.005 ? 'text-orange-600' : 'text-gray-400'}">${formatEuro(R)}</b></div></div>
+                   <div class="h-2 bg-gray-200 rounded-full mt-3 overflow-hidden"><div class="h-2 bg-green-500" style="width:${T ? Math.min(100, P / T * 100) : 0}%"></div></div>
+                   <div class="mt-3 space-y-1 text-xs">${Object.entries(parLieu).map(([l, o]) => `<div class="flex justify-between gap-2"><span class="truncate">${esc(l)}</span><span class="shrink-0 text-gray-600">payé ${formatEuro(o.p)} / ${formatEuro(o.t)}${o.t - o.p > 0.005 ? ` · <b class="text-orange-600">reste ${formatEuro(o.t - o.p)}</b>` : ' ✓'}</span></div>`).join('')}</div>`;
 
-            missions.forEach(m => {
-                let [a, mm] = m.date.split('-').map(Number);
-                if (a === anneeGraphe) {
-                    let montantM = calculerMontantMission(m);
-                    let carbM = calculerCoutCarburantMission(m);
-                    let finalM = modeAffichageBrut ? montantM : Math.max(0, montantM - carbM);
-                    gainsParMois[mm - 1] += finalM;
-                    percusParMois[mm - 1] += Math.min(finalM, modeAffichageBrut ? obtenirMontantPaye(m) : Math.max(0, obtenirMontantPaye(m) - carbM));
-                }
-            });
+            // Stats du mois
+            const mDuMois = missions.filter(m => { const [a, mm] = m.date.split('-').map(Number); return a === annee && mm - 1 === mois; });
+            const tot = mDuMois.reduce((s, m) => s + valeurAff(m), 0), per = mDuMois.reduce((s, m) => s + partPercue(m), 0);
+            document.getElementById('recap-stat-jours').innerText = new Set(mDuMois.map(m => m.date)).size;
+            document.getElementById('recap-stat-heures').innerText = `${mDuMois.reduce((s, m) => s + calculerHeuresMission(m), 0).toFixed(1)} h`;
+            document.getElementById('recap-stat-montant').innerText = `${tot.toFixed(2)} €`;
+            document.getElementById('recap-stat-percu').innerText = `${per.toFixed(2)} €`;
+            document.getElementById('recap-reste').innerText = `Reste à percevoir : ${(tot - per).toFixed(2)} €`;
 
-            let maxGain = Math.max(...gainsParMois, 100);
-            let abrMois = ["Janv", "Févr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Déce"];
-
-            for (let i = 0; i < 12; i++) {
-                let pctGagne = (gainsParMois[i] / maxGain) * 100;
-                let pctPercu = (percusParMois[i] / maxGain) * 100;
-                let styleGagne = gainsParMois[i] > 0 ? `height: ${Math.max(pctGagne, 4)}%` : `height: 2px; opacity: 0.2;`;
-                let stylePercu = percusParMois[i] > 0 ? `height: ${Math.max(pctPercu, 4)}%` : `height: 0px;`;
-
-                diagrammeEl.innerHTML += `
-                    <div onclick="afficherDetailMoisGraphe(${i})" class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer">
-                        <div class="absolute -top-10 bg-gray-800 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none z-10 shadow-md whitespace-nowrap">
-                            ${gainsParMois[i].toFixed(2)} € (Payé: ${percusParMois[i].toFixed(2)} €)
-                        </div>
-                        <div class="w-full max-w-[18px] bg-gray-100 rounded-t flex items-end justify-center relative overflow-hidden" style="height: 100%;">
-                            <div class="w-full bg-blue-500 rounded-t absolute bottom-0 transition-all duration-300" style="${styleGagne}"></div>
-                            <div class="w-full bg-green-500 rounded-t absolute bottom-0 transition-all duration-300" style="${stylePercu}"></div>
-                        </div>
-                        <span class="text-[10px] text-gray-400 font-semibold mt-2">${abrMois[i]}</span>
-                    </div>
-                `;
-            }
-
-            let missionsDuMois = missions.filter(m => {
-                let [a, mm] = m.date.split('-').map(Number);
-                return a === annee && (mm - 1) === mois;
-            });
-
-            let totalJours = new Set(missionsDuMois.map(m => m.date)).size;
-            let totalHeures = missionsDuMois.reduce((acc, m) => acc + calculerHeuresMission(m), 0);
-
-            let totalMontantBrutGlobal = missionsDuMois.reduce((acc, m) => acc + calculerMontantMission(m), 0);
-            let totalCarburantGlobal = missionsDuMois.reduce((acc, m) => acc + calculerCoutCarburantMission(m), 0);
-            let totalAffichageMontant = modeAffichageBrut ? totalMontantBrutGlobal : Math.max(0, totalMontantBrutGlobal - totalCarburantGlobal);
-
-            let totalPercu = missionsDuMois.reduce((acc, m) => {
-                let valM = modeAffichageBrut ? calculerMontantMission(m) : Math.max(0, calculerMontantMission(m) - calculerCoutCarburantMission(m));
-                return acc + Math.min(valM, modeAffichageBrut ? obtenirMontantPaye(m) : Math.max(0, obtenirMontantPaye(m) - calculerCoutCarburantMission(m)));
-            }, 0);
-
-            document.getElementById('recap-stat-jours').innerText = totalJours;
-            document.getElementById('recap-stat-heures').innerText = `${totalHeures.toFixed(1)} h`;
-            document.getElementById('recap-stat-montant').innerText = `${totalAffichageMontant.toFixed(2)} €`;
-            document.getElementById('recap-stat-percu').innerText = `${totalPercu.toFixed(2)} €`;
-            document.getElementById('recap-reste').innerText = `Reste à percevoir : ${(totalAffichageMontant - totalPercu).toFixed(2)} €`;
-
-            let tbody = document.getElementById('tableau-recap-corps');
-            tbody.innerHTML = '';
-
-            let groupes = {};
-            missionsDuMois.forEach(m => {
-                if (!groupes[m.lieu]) groupes[m.lieu] = [];
-                groupes[m.lieu].push(m);
-            });
-
-            let lieuxAssocies = Object.keys(groupes);
-            let btnBatch = document.getElementById('btn-batch-paiement');
+            const btnBatch = document.getElementById('btn-batch-paiement');
             if (btnBatch) {
                 btnBatch.disabled = selectedRecapLieux.length === 0;
                 btnBatch.className = selectedRecapLieux.length > 0 ? "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-medium shadow-sm transition text-sm cursor-pointer" : "bg-gray-300 text-white px-4 py-2.5 rounded-xl font-medium shadow-sm transition text-sm cursor-not-allowed";
-                btnBatch.innerText = `Enregistrer le paiement (${selectedRecapLieux.length})`;
+                btnBatch.innerText = `Tout marquer payé (${selectedRecapLieux.length})`;
             }
 
-            if (lieuxAssocies.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-gray-400 italic">Aucune vacation enregistrée ce mois-ci.</td></tr>`;
-                return;
-            }
-
-            for (let lieu in groupes) {
-                let listM = groupes[lieu];
-                let kmTot = listM.reduce((acc, m) => acc + (m.distance || 0), 0);
-                let carbuTot = listM.reduce((acc, m) => acc + calculerCoutCarburantMission(m), 0);
-                let joursCount = new Set(listM.map(m => m.date)).size;
-                let hTot = listM.reduce((acc, m) => acc + calculerHeuresMission(m), 0);
-                let montantBrutTot = listM.reduce((acc, m) => acc + calculerMontantMission(m), 0);
-                let montantNetTot = Math.max(0, montantBrutTot - carbuTot);
-                let montantAfficheLieu = modeAffichageBrut ? montantBrutTot : montantNetTot;
-
-                let tauxMoyenBrut = hTot > 0 ? (montantBrutTot / hTot) : 0;
-                let tauxMoyenNet = hTot > 0 ? (montantNetTot / hTot) : 0;
-                let tauxAfficheLieu = modeAffichageBrut ? tauxMoyenBrut : tauxMoyenNet;
-
-                let allGreen = listM.every(m => m.statut === 'green');
-                let isChecked = selectedRecapLieux.includes(lieu);
-
-                const payeLieu=listM.reduce((s,m)=>s+obtenirMontantPaye(m),0);
-                const resteLieu=Math.max(0,montantBrutTot-payeLieu);
-                tbody.innerHTML += `
-                    <div class="rounded-2xl border ${isChecked?'border-blue-400 ring-2 ring-blue-100':'border-gray-200'} p-4 bg-white shadow-sm space-y-3">
-                        <div class="flex items-start justify-between gap-3">
-                            <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" ${isChecked?'checked':''} onclick="basculerSelectionRecap('${lieu.replace(/'/g, "\'")}')" class="mt-1 rounded border-gray-300 text-blue-600 cursor-pointer"><span><b class="text-gray-800">${lieu}</b><span class="block text-xs text-gray-500 mt-0.5">${joursCount} jour(s) · ${hTot.toFixed(1)} h · ${kmTot} km</span></span></label>
-                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${payeLieu>=montantBrutTot-0.01?'bg-green-100 text-green-700':payeLieu>0?'bg-orange-100 text-orange-700':'bg-blue-100 text-blue-700'}">${payeLieu>=montantBrutTot-0.01?'Payé':payeLieu>0?'Partiel':'À régler'}</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 text-xs"><div class="bg-gray-50 rounded-xl p-2.5"><span class="text-gray-500">Montant</span><b class="block text-blue-600 mt-0.5">${montantAfficheLieu.toFixed(2)} €</b></div><div class="bg-gray-50 rounded-xl p-2.5"><span class="text-gray-500">Reste</span><b class="block text-orange-600 mt-0.5">${resteLieu.toFixed(2)} €</b></div></div>
-                        <div class="flex justify-between items-center text-xs"><span class="text-gray-500">Taux moyen : ${tauxAfficheLieu.toFixed(2)} €/h</span><button onclick="basculerPaiementLieu('${lieu.replace(/'/g, "\'")}')" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium cursor-pointer">Basculer statut</button></div>
-                    </div>`;
-            }
+            // Cartes par établissement
+            const groupes = {}; mDuMois.forEach(m => (groupes[m.lieu] = groupes[m.lieu] || []).push(m));
+            const cont = document.getElementById('cartes-recap'), lieux = Object.keys(groupes);
+            if (!lieux.length) { cont.innerHTML = `<div class="md:col-span-2 bg-white p-6 rounded-2xl border border-gray-200 text-center text-gray-400 italic text-sm">Aucune vacation enregistrée ce mois-ci.</div>`; return; }
+            cont.innerHTML = lieux.map(lieu => {
+                const L = groupes[lieu], q = esc(lieu.replace(/\\/g, '\\\\').replace(/'/g, "\\'"));
+                const h = L.reduce((s, m) => s + calculerHeuresMission(m), 0), t = L.reduce((s, m) => s + valeurAff(m), 0), p = L.reduce((s, m) => s + partPercue(m), 0);
+                const km = L.reduce((s, m) => s + (m.distance || 0), 0), carbu = L.reduce((s, m) => s + calculerCoutCarburantMission(m), 0);
+                const nbPaye = L.filter(m => m.statut === 'green').length, tousPayes = nbPaye === L.length, aucun = nbPaye === 0 && !L.some(m => m.statut === 'orange');
+                const badge = tousPayes ? ['Payé', 'bg-green-100 text-green-700'] : (aucun ? ['À régler', 'bg-blue-100 text-blue-700'] : [`Partiel ${nbPaye}/${L.length}`, 'bg-orange-100 text-orange-700']);
+                const chk = selectedRecapLieux.includes(lieu);
+                const jours = [...new Set(L.map(m => m.date))].sort().map(d => Number(d.slice(8))).join(', ');
+                return `<div class="bg-white rounded-2xl border ${chk ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'} shadow-sm p-4 space-y-3">
+                    <div class="flex items-start justify-between gap-2"><label class="flex items-center gap-2 min-w-0 cursor-pointer"><input type="checkbox" ${chk ? 'checked' : ''} onclick="basculerSelectionRecap('${q}')" class="rounded border-gray-300 text-blue-600"><span class="font-bold text-gray-800 truncate">${esc(lieu)}</span></label><span class="shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold ${badge[1]}">${badge[0]}</span></div>
+                    <div class="grid grid-cols-4 gap-2 text-center">
+                        <div><div class="text-[11px] text-gray-500">Jours</div><b>${new Set(L.map(m => m.date)).size}</b></div>
+                        <div><div class="text-[11px] text-gray-500">Heures</div><b>${h.toFixed(1)}</b></div>
+                        <div><div class="text-[11px] text-gray-500">Montant</div><b class="text-blue-600">${t.toFixed(0)} €</b></div>
+                        <div><div class="text-[11px] text-gray-500">Taux/h</div><b>${h > 0 ? (t / h).toFixed(2) : '0.00'}</b></div>
+                    </div>
+                    <div><div class="h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-2 bg-green-500" style="width:${t ? Math.min(100, p / t * 100) : 0}%"></div></div><div class="flex justify-between text-xs mt-1"><span class="text-green-600 font-semibold">Perçu ${formatEuro(p)}</span><span class="${t - p > 0.005 ? 'text-orange-600 font-semibold' : 'text-gray-400'}">Reste ${formatEuro(Math.max(0, t - p))}</span></div></div>
+                    <div class="text-[11px] text-gray-400">📅 Jours : ${jours}${km ? ` · 🚗 ${km} km (carburant -${carbu.toFixed(2)} €)` : ''}</div>
+                    <div class="flex gap-2"><button onclick="basculerPaiementLieu('${q}')" class="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-medium cursor-pointer">${tousPayes ? 'Remettre à régler' : 'Tout marquer payé'}</button>${tousPayes ? '' : `<button onclick="payerLieuDetail('${q}')" class="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium cursor-pointer">Paiement par vacations</button>`}</div>
+                </div>`;
+            }).join('');
         }
 
         function genererListeVehicules() {
@@ -1970,7 +2007,7 @@
                     <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 flex justify-between items-center text-xs">
                         <div>
                             <div class="font-bold text-gray-800 text-sm">${e.nom}</div>
-                            <div class="text-gray-500 mt-0.5">Taux : ${e.tauxDefaut || 0} €/h | Distance : ${e.distanceDefaut || 0} km A-R</div>
+                            <div class="text-gray-500 mt-0.5">Taux : ${e.tauxDefaut || 0} €/h | Distance : ${e.distanceDefaut || 0} km A-R</div><div class="mt-0.5 ${e.email ? 'text-gray-500' : 'text-orange-600 font-semibold'}">${e.email ? '✉️ ' + e.email : '⚠️ E-mail manquant (relances impossibles)'}</div>
                         </div>
                         <button onclick="ouvrirModalEditionEtablissement(${idx})" class="bg-white border border-gray-300 hover:bg-gray-100 px-3 py-1.5 rounded-lg font-medium cursor-pointer shadow-sm">Modifier</button>
                     </div>
@@ -1978,27 +2015,28 @@
             });
         }
 
-        function genererEmailRelance(etab, liste) {
-            const email = (etab?.email || '').trim();
-            const lignes = liste.map(m => `- ${m.date} — ${m.heureDebut} à ${m.heureFin} — ${calculerHeuresMission(m).toFixed(1)} h — ${calculerMontantMission(m).toFixed(2)} €`).join('\n');
-            const total = liste.reduce((s,m)=>s+obtenirResteMission(m),0);
-            const objet=`Relance paiement — vacations en attente`;
-            const corps=`Bonjour,\n\nSauf erreur de ma part, les vacations suivantes restent à ce jour non réglées :\n\n${lignes}\n\nMontant estimé restant à régler : ${total.toFixed(2)} €.\n\nMerci de bien vouloir vérifier ces éléments et régulariser le règlement dans les meilleurs délais.\n\nCordialement`;
-            window.location.href=`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(objet)}&body=${encodeURIComponent(corps)}`;
-        }
         function verifierNotificationsAlertes() {
-            let badge=document.getElementById('badge-notif'), badgeMobile=document.getElementById('badge-notif-mobile'), container=document.getElementById('liste-notifications'); if(!container)return;
-            const today=dateLocaleISO(), groupes={};
-            missions.forEach(m=>{
-                const reste=obtenirResteMission(m); if(reste<=0 || !m.date || m.date>=today)return;
-                const diff=Math.floor((new Date(today)-new Date(m.date))/(86400000)); if(diff<=delaiRelancePaiement)return;
-                const e=etablissements.find(x=>x.nom.toLowerCase()===String(m.lieu||'').toLowerCase()); const key=m.lieu||'Établissement';
-                if(!groupes[key])groupes[key]={etab:e,missions:[]}; groupes[key].missions.push(m);
-            });
-            const alertes=Object.entries(groupes);
-            [badge,badgeMobile].forEach(b=>{if(!b)return; if(alertes.length){b.innerText=alertes.length;b.classList.remove('hidden')}else b.classList.add('hidden')});
-            if(!alertes.length){container.innerHTML='<div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center text-gray-400 text-sm italic">Aucun retard dépassant le délai configuré.</div>';return;}
-            container.innerHTML=alertes.map(([nom,g])=>{const total=g.missions.reduce((s,m)=>s+obtenirResteMission(m),0);const email=g.etab?.email||'';return `<div class="bg-white p-5 rounded-2xl border border-red-200 shadow-sm space-y-3"><div class="flex justify-between items-start gap-3"><div><span class="bg-red-100 text-red-700 text-xs font-bold px-2.5 py-1 rounded-full">Retard > ${delaiRelancePaiement} jours</span><h4 class="font-bold text-gray-800 mt-2">${nom}</h4><p class="text-xs text-gray-500">${g.missions.length} vacation(s) — ${total.toFixed(2)} € restant(s)</p></div><button onclick='genererEmailRelance(${JSON.stringify(g.etab||{} )}, ${JSON.stringify(g.missions.map(x=>x.id))}.map(id=>missions.find(m=>m.id===id)).filter(Boolean))' class="${email?'':'opacity-50 cursor-not-allowed'} bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-semibold" ${email?'':'disabled'}>✉️ Relancer par e-mail</button></div><div class="space-y-1.5 text-xs text-gray-600">${g.missions.map(m=>`<div class="flex justify-between gap-3 border-t border-gray-100 pt-1.5"><span>${m.date} · ${m.heureDebut}-${m.heureFin} · ${calculerHeuresMission(m).toFixed(1)} h</span><b>${obtenirResteMission(m).toFixed(2)} €</b></div>`).join('')}</div>${email?`<p class="text-[11px] text-gray-400">Destinataire : ${email}</p>`:'<p class="text-[11px] text-orange-600">Ajoutez l’e-mail de cet établissement dans Réglages pour activer la relance.</p>'}</div>`}).join('');
+            const badge = document.getElementById('badge-notif'), badgeMobile = document.getElementById('badge-notif-mobile'), container = document.getElementById('liste-notifications');
+            if (!container) return;
+            const lieux = [...new Set(missions.map(m => m.lieu))].filter(l => impayesAnciens(l).length > 0);
+            [badge, badgeMobile].forEach(b => { if (b) { b.innerText = lieux.length; b.classList.toggle('hidden', lieux.length === 0); } });
+            if (!lieux.length) { container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center text-gray-400 text-sm italic">Aucun paiement en retard de plus de 30 jours. Tout est en ordre !</div>`; return; }
+            const auj = new Date(dateLocaleISO() + 'T00:00:00');
+            container.innerHTML = lieux.map(lieu => {
+                const ms = impayesAnciens(lieu), e = trouverEtab(lieu), q = esc(lieu.replace(/\\/g, '\\\\').replace(/'/g, "\\'"));
+                const maxJ = Math.floor((auj - new Date(ms[0].date + 'T00:00:00')) / 864e5), crit = maxJ >= 60;
+                const h = ms.reduce((s, m) => s + calculerHeuresMission(m), 0), tot = ms.reduce((s, m) => s + montantTheorique(m), 0);
+                return `<div class="bg-white p-5 rounded-2xl border ${crit ? 'border-red-300' : 'border-orange-300'} shadow-sm space-y-3">
+                    <div class="flex flex-wrap justify-between items-start gap-2"><div><span class="${crit ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'} text-xs font-bold px-2.5 py-0.5 rounded-full">${crit ? '🔴 Retard critique (60 j et +)' : '🟠 Retard (30 j et +)'}</span><h4 class="font-bold text-gray-800 text-base mt-2">${esc(lieu)}</h4><p class="text-xs text-gray-500">${ms.length} vacation(s) impayée(s) · ${h.toFixed(1)} h · ≈ ${formatEuro(tot)} · plus ancienne : ${maxJ} jours</p></div>${e && e.derniereRelance ? `<span class="text-[11px] text-gray-400">Dernière relance : ${fmtJour(e.derniereRelance)}</span>` : ''}</div>
+                    <div class="flex flex-wrap gap-1.5">${ms.map(m => `<span class="text-[11px] bg-gray-100 rounded-lg px-2 py-1">${fmtJour(m.date).slice(0, 5)} · ${m.heureDebut}-${m.heureFin}</span>`).join('')}</div>
+                    ${e && e.email ? '' : `<p class="text-xs text-orange-600 font-medium">⚠️ Aucun e-mail enregistré pour cet établissement.</p>`}
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="relancerEtablissement('${q}')" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-medium cursor-pointer">${e && e.email ? '✉️ Envoyer un mail de relance' : '➕ Ajouter l\'e-mail pour relancer'}</button>
+                        <button onclick="copierRelance('${q}')" class="px-3.5 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-xs font-medium cursor-pointer">📋 Copier le message</button>
+                        <button onclick="payerDepuisAlerte('${q}')" class="px-3.5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-medium cursor-pointer">💰 Ils m'ont payé</button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function mettreAJourApplication() {
@@ -2032,6 +2070,7 @@
                 }
             });
 
+            visibles = missionsFiltrees;
             let totalJours = new Set(missionsFiltrees.map(m => m.date)).size;
             let totalHeures = missionsFiltrees.reduce((acc, m) => acc + calculerHeuresMission(m), 0);
             let totalMontantBrutGlobal = missionsFiltrees.reduce((acc, m) => acc + calculerMontantMission(m), 0);
@@ -2041,7 +2080,7 @@
 
             let totalPercu = missionsFiltrees.reduce((acc, m) => {
                 let valM = modeAffichageBrut ? calculerMontantMission(m) : Math.max(0, calculerMontantMission(m) - calculerCoutCarburantMission(m));
-                return acc + Math.min(valM, modeAffichageBrut ? obtenirMontantPaye(m) : Math.max(0, obtenirMontantPaye(m) - calculerCoutCarburantMission(m)));
+                return acc + (m.statut === 'green' ? valM : (m.statut === 'orange' ? valM / 2 : 0));
             }, 0);
 
             document.getElementById('stat-jours').innerText = totalJours;
@@ -2061,8 +2100,6 @@
 
             let grilleCal = document.getElementById('grille-calendrier');
             let timelineMob = document.getElementById('vue-timeline-mobile');
-            const selBar=document.getElementById('selection-calendrier-actions'); const selCount=document.getElementById('selection-calendrier-count');
-            if(selBar){ selBar.classList.toggle('hidden', missionsSelectionneesCalendrier.length===0); if(selCount)selCount.innerText=`${missionsSelectionneesCalendrier.length} sélectionnée(s)`; }
             grilleCal.innerHTML = '';
             timelineMob.innerHTML = '';
 
@@ -2089,8 +2126,8 @@
                         let tauxEffectif = calculerHeuresMission(m) > 0 ? (affM / calculerHeuresMission(m)) : 0;
                         let carbuString = carbuM > 0 ? `<span class="text-orange-500 font-semibold block text-[10px]">Carburant : -${carbuM.toFixed(2)}€</span>` : '';
                         return `
-                            <div onclick="event.stopPropagation(); ouvrirModalEdition(${globalIdx})" class="${bgCouleur} text-white p-2 rounded-xl text-xs cursor-pointer shadow-sm hover:opacity-90 transition space-y-0.5 ${missionsSelectionneesCalendrier.includes(Number(m.id))?'ring-4 ring-white':''}">
-                                <div class="flex justify-between items-start gap-1"><div class="font-bold truncate">${m.lieu}</div><input type="checkbox" ${missionsSelectionneesCalendrier.includes(Number(m.id))?'checked':''} onclick="basculerSelectionCalendrier(${m.id},event)" class="w-4 h-4 rounded border-white text-blue-600 cursor-pointer shrink-0"></div>
+                            <div onclick="clicMission(event,${m.id},${globalIdx})" class="${bgCouleur} ${classeSel(m)} text-white p-2 rounded-xl text-xs cursor-pointer shadow-sm hover:opacity-90 transition space-y-0.5">
+                                <div class="font-bold truncate">${m.lieu}</div>
                                 <div class="text-[10px] opacity-90">${m.heureDebut} - ${m.heureFin}</div>
                                 <div class="font-extrabold text-[11px]">${affM.toFixed(2)} € <span class="font-normal text-[10px]">(${tauxEffectif.toFixed(2)}€/h)</span></div>
                                 ${carbuString}
@@ -2099,7 +2136,7 @@
                     }).join('');
 
                     grilleCal.innerHTML += `
-                        <div onclick="ouvrirModalAjout('${dateStr}')" class="bg-white rounded-2xl border border-gray-200 p-2.5 min-h-[110px] flex flex-col justify-between cursor-pointer hover:border-blue-400 transition shadow-sm group">
+                        <div onclick="clicJour('${dateStr}')" class="bg-white rounded-2xl border border-gray-200 p-2.5 min-h-[110px] flex flex-col justify-between cursor-pointer hover:border-blue-400 transition shadow-sm group">
                             <div class="flex justify-between items-center text-xs font-bold text-gray-700">
                                 <span>${jour}</span>
                                 <span class="opacity-0 group-hover:opacity-100 text-blue-600 font-bold">+</span>
@@ -2119,7 +2156,7 @@
                 } else {
                     let aujourdhuiStr = dateLocaleISO();
                     let joursSemaineNoms = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-                    let derniereSemaineTimeline = '';
+                    
                     missionsMoisCourant.forEach(m => {
                         let globalIdx = missions.findIndex(item => item.id === m.id);
                         let bgCouleur = m.statut === 'green' ? 'bg-green-500' : (m.statut === 'orange' ? 'bg-orange-500' : 'bg-blue-600');
@@ -2146,7 +2183,6 @@
                         }
 
                         timelineMob.innerHTML += `
-                            ${(() => { const s = Math.ceil(new Date(m.date+'T00:00:00').getDate()/7); if (String(s) !== derniereSemaineTimeline) { derniereSemaineTimeline=String(s); return `<div class="text-[11px] text-gray-400 font-bold uppercase tracking-wider px-1 mb-1 mt-2">Semaine ${s}</div>`; } return ""; })()}
                             <div onclick="ouvrirModalEdition(${globalIdx})" class="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm hover:border-blue-400 transition cursor-pointer space-y-2.5">
                                 <div class="flex items-center justify-between border-b border-gray-100 pb-2">
                                     <div class="flex items-center space-x-2">
@@ -2178,7 +2214,7 @@
                 for (let i = 0; i < 7; i++) {
                     let dCourante = new Date(dDebutSem);
                     dCourante.setDate(dDebutSem.getDate() + i);
-                    let dateStr = dCourante.toISOString().slice(0, 10);
+                    let dateStr = dateISO(dCourante);
                     let missionsDuJour = missions.filter(m => m.date === dateStr);
                     let nomsJours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
@@ -2191,8 +2227,8 @@
                         let tauxEffectif = calculerHeuresMission(m) > 0 ? (affM / calculerHeuresMission(m)) : 0;
                         let carbuString = carbuM > 0 ? `<span class="text-orange-500 font-semibold block text-[10px]">Carburant : -${carbuM.toFixed(2)}€</span>` : '';
                         return `
-                            <div onclick="event.stopPropagation(); ouvrirModalEdition(${globalIdx})" class="${bgCouleur} text-white p-2.5 rounded-xl text-xs cursor-pointer shadow-sm hover:opacity-90 transition space-y-1 ${missionsSelectionneesCalendrier.includes(Number(m.id))?'ring-4 ring-white':''}">
-                                <div class="flex justify-between items-start gap-1"><div class="font-bold truncate">${m.lieu}</div><input type="checkbox" ${missionsSelectionneesCalendrier.includes(Number(m.id))?'checked':''} onclick="basculerSelectionCalendrier(${m.id},event)" class="w-4 h-4 rounded border-white text-blue-600 cursor-pointer shrink-0"></div>
+                            <div onclick="clicMission(event,${m.id},${globalIdx})" class="${bgCouleur} ${classeSel(m)} text-white p-2.5 rounded-xl text-xs cursor-pointer shadow-sm hover:opacity-90 transition space-y-1">
+                                <div class="font-bold truncate">${m.lieu}</div>
                                 <div class="text-[10px] opacity-90">${m.heureDebut} - ${m.heureFin}</div>
                                 <div class="font-extrabold text-[11px]">${affM.toFixed(2)} € <span class="font-normal text-[10px]">(${tauxEffectif.toFixed(2)}€/h)</span></div>
                                 ${carbuString}
@@ -2201,7 +2237,7 @@
                     }).join('');
 
                     grilleCal.innerHTML += `
-                        <div onclick="ouvrirModalAjout('${dateStr}')" class="bg-white rounded-2xl border border-gray-200 p-3 min-h-[160px] flex flex-col justify-between cursor-pointer hover:border-blue-400 transition shadow-sm group">
+                        <div onclick="clicJour('${dateStr}')" class="bg-white rounded-2xl border border-gray-200 p-3 min-h-[160px] flex flex-col justify-between cursor-pointer hover:border-blue-400 transition shadow-sm group">
                             <div class="flex justify-between items-center text-xs font-bold text-gray-700 border-b border-gray-100 pb-1.5">
                                 <span>${nomsJours[i]} ${dCourante.getDate()}</span>
                                 <span class="opacity-0 group-hover:opacity-100 text-blue-600 font-bold">+</span>
@@ -2240,12 +2276,15 @@
                 }
             }
 
+            timelineMob.innerHTML = genererListeSemaines(missionsFiltrees);
             genererRecapMensuel();
             verifierNotificationsAlertes();
+            majBarreSelection();
         }
 
         // Lancement au démarrage
         document.addEventListener("DOMContentLoaded", () => {
+            majBoutonsBrutNet();
             mettreAJourApplication();
         });
     </script>
