@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivi Vacations — V7 Mobile</title>
+    <title>Suivi Vacations</title>
+    <meta name="theme-color" content="#2563eb">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Suivi Vacations">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Firebase SDK Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -54,6 +61,14 @@
         #vue-grille-bureau{display:none!important}
       }
       @media (min-width:768px){#vue-timeline-mobile{display:none!important}}
+      @media (max-width:767px){
+        #contenu-accueil{gap:14px!important}
+        .home-hero{background:linear-gradient(135deg,#2563eb 0%,#4f46e5 100%);color:white;border-radius:24px;padding:20px;box-shadow:0 10px 28px rgba(37,99,235,.18)}
+        .home-kpi{background:white;border:1px solid #e5e7eb;border-radius:18px;padding:14px;box-shadow:0 2px 9px rgba(15,23,42,.04)}
+        .home-action{background:white;border:1px solid #e5e7eb;border-radius:18px;padding:14px;box-shadow:0 2px 9px rgba(15,23,42,.04);cursor:pointer}
+        .home-action:active{transform:scale(.99)}
+      }
+      .home-action{transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}.home-action:hover{border-color:#bfdbfe;box-shadow:0 5px 16px rgba(15,23,42,.07)}
     </style>
 </head>
 <body class="bg-gray-100 font-sans min-h-screen pb-24 md:pb-16">
@@ -95,6 +110,7 @@
         </div>
         
         <nav class="hidden md:flex space-x-1.5 bg-gray-50 p-1.5 rounded-xl border border-gray-200">
+            <button onclick="changerOnglet('accueil')" id="tab-accueil" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 transition cursor-pointer">Accueil</button>
             <button onclick="changerOnglet('planning')" id="tab-planning" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700 transition cursor-pointer">Planning</button>
             <button onclick="changerOnglet('recap')" id="tab-recap" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Récap</button>
             <button onclick="changerOnglet('pilotage')" id="tab-pilotage" class="px-3.5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition cursor-pointer">Pilotage</button>
@@ -111,15 +127,76 @@
 
     <!-- Navigation Smartphone -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-1 py-2 flex justify-around items-center z-40 shadow-xl">
-        <button onclick="changerOnglet('planning')" id="m-tab-planning" class="flex-1 flex flex-col items-center text-blue-600 font-semibold text-[11px] space-y-1 relative"><span class="text-xl">📅</span><span>Planning</span></button>
+        <button onclick="changerOnglet('accueil')" id="m-tab-accueil" class="flex-1 flex flex-col items-center text-blue-600 font-semibold text-[11px] space-y-1 relative"><span class="text-xl">🏠</span><span>Accueil</span></button>
+        <button onclick="changerOnglet('planning')" id="m-tab-planning" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📅</span><span>Planning</span></button>
         <button onclick="changerOnglet('recap')" id="m-tab-recap" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">💶</span><span>Récap</span></button>
-        <button onclick="changerOnglet('pilotage')" id="m-tab-pilotage" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📊</span><span>Pilotage</span></button>
         <button onclick="changerOnglet('documents')" id="m-tab-documents" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">📁</span><span>Docs</span></button>
         <button onclick="changerOnglet('notifications')" id="m-tab-notifications" class="flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative"><span class="text-xl">🔔</span><span>Alertes</span><span id="badge-notif-mobile" class="absolute top-0 right-3 bg-red-500 text-white text-[9px] px-1.5 rounded-full hidden">0</span></button>
     </div>
 
     <div class="w-full max-w-6xl mx-auto px-4 md:px-6 pb-16 min-w-0">
         
+        <!-- ACCUEIL : À FAIRE / AUJOURD'HUI / CETTE SEMAINE -->
+        <div id="contenu-accueil" class="space-y-5">
+            <div class="home-hero">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <p class="text-blue-100 text-xs font-semibold uppercase tracking-wider">Votre suivi</p>
+                        <h2 class="text-2xl font-extrabold mt-1">Bonjour 👋</h2>
+                        <p id="home-sous-titre" class="text-sm text-blue-100 mt-1">Voici ce qui mérite votre attention.</p>
+                    </div>
+                    <button onclick="changerOnglet('planning')" class="bg-white/15 border border-white/25 rounded-xl px-3 py-2 text-xs font-bold text-white">📅 Planning</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="ouvrirAccueilAlerte('impayes')" class="home-kpi text-left">
+                    <div class="text-xs font-bold text-gray-500 uppercase">🔴 Impayés</div>
+                    <div id="home-impayes-montant" class="text-2xl font-extrabold text-red-600 mt-2">0 €</div>
+                    <div id="home-impayes-detail" class="text-[11px] text-gray-400 mt-1">Tout est à jour</div>
+                </button>
+                <button onclick="ouvrirAccueilAlerte('bulletins')" class="home-kpi text-left">
+                    <div class="text-xs font-bold text-gray-500 uppercase">📄 Bulletins</div>
+                    <div id="home-bulletins" class="text-2xl font-extrabold text-orange-600 mt-2">0</div>
+                    <div id="home-bulletins-detail" class="text-[11px] text-gray-400 mt-1">À vérifier</div>
+                </button>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div><h3 class="font-extrabold text-gray-800">📌 À faire</h3><p class="text-xs text-gray-500 mt-0.5">Les points qui nécessitent votre attention.</p></div>
+                    <span id="home-todo-count" class="bg-gray-100 text-gray-600 text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                </div>
+                <div id="home-todo-list" class="space-y-2"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div><h3 class="font-extrabold text-gray-800">📅 Aujourd'hui</h3><p id="home-today-label" class="text-xs text-gray-500 mt-0.5"></p></div>
+                    <button onclick="changerOnglet('planning'); allerAujourdhui();" class="text-xs text-blue-600 font-bold">Voir</button>
+                </div>
+                <div id="home-today-list" class="space-y-2"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div><h3 class="font-extrabold text-gray-800">📆 Cette semaine</h3><p class="text-xs text-gray-500 mt-0.5">Vos prochaines vacations</p></div>
+                    <button onclick="changerOnglet('planning'); changerTypeVue('semaine'); allerAujourdhui();" class="text-xs text-blue-600 font-bold">Planning</button>
+                </div>
+                <div class="grid grid-cols-3 gap-2 mb-3">
+                    <div class="home-kpi"><div class="text-[10px] text-gray-400 uppercase font-bold">Vacations</div><div id="home-week-missions" class="text-lg font-extrabold text-gray-800 mt-1">0</div></div>
+                    <div class="home-kpi"><div class="text-[10px] text-gray-400 uppercase font-bold">Heures</div><div id="home-week-hours" class="text-lg font-extrabold text-gray-800 mt-1">0 h</div></div>
+                    <div class="home-kpi"><div class="text-[10px] text-gray-400 uppercase font-bold">Montant</div><div id="home-week-amount" class="text-lg font-extrabold text-blue-600 mt-1">0 €</div></div>
+                </div>
+                <div id="home-week-list" class="space-y-2"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="changerOnglet('recap')" class="home-action text-left"><div class="text-xl">💶</div><div class="font-extrabold text-gray-800 mt-2">Mes paiements</div><div id="home-payment-summary" class="text-xs text-gray-500 mt-1">Voir le détail</div></button>
+                <button onclick="changerOnglet('pilotage')" class="home-action text-left"><div class="text-xl">📊</div><div class="font-extrabold text-gray-800 mt-2">Mon activité</div><div class="text-xs text-gray-500 mt-1">CA, heures, km</div></button>
+            </div>
+        </div>
+
         <!-- ONGLET PILOTAGE : NOUVELLES FONCTIONNALITÉS -->
         <div id="contenu-pilotage" class="hidden space-y-8">
             <div>
@@ -760,7 +837,7 @@
         let dateActiveRecap = new Date();
         let anneeGraphe = new Date().getFullYear();
         let typeVue = 'mois';
-        let ongletActif = 'planning';
+        let ongletActif = 'accueil';
         let modeAffichageBrut = true; 
         let selectedRecapLieux = [];
         let dernierFichierScanBase64 = null;
@@ -1844,9 +1921,56 @@
         function copierRelance(lieu) { const r = messageRelance(lieu), t = r.sujet + '\n\n' + r.corps; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => alert('Message copié.')).catch(() => prompt('Copiez le message :', t)); }
         function payerDepuisAlerte(lieu) { selectionIds = new Set(impayesAnciens(lieu).map(m => m.id)); modeSelection = true; ouvrirModalPaiementLot(); }
 
+        function genererAccueil() {
+            const auj = dateLocaleISO();
+            const dAuj = new Date(auj + 'T00:00:00');
+            const debut = new Date(dAuj);
+            const js = debut.getDay();
+            debut.setDate(debut.getDate() - js + (js === 0 ? -6 : 1));
+            debut.setHours(0,0,0,0);
+            const fin = new Date(debut); fin.setDate(fin.getDate() + 6); fin.setHours(23,59,59,999);
+            const isoFin = dateISO(fin);
+            const dansSemaine = missions.filter(m => m.date >= dateISO(debut) && m.date <= isoFin).sort((a,b)=>a.date.localeCompare(b.date));
+            const aujourdHui = missions.filter(m => m.date === auj).sort((a,b)=>(a.heureDebut||'').localeCompare(b.heureDebut||''));
+            const aVenir = missions.filter(m => m.date >= auj).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
+            const impayes = missions.filter(m => m.statut !== 'green' && Math.floor((dAuj - new Date(m.date+'T00:00:00'))/864e5) >= 30);
+            const impayeMontant = impayes.reduce((s,m)=>s+obtenirResteMission(m),0);
+            const bulletinsManquants = missions.filter(m => m.date < auj && !m.bulletinRecu).sort((a,b)=>b.date.localeCompare(a.date));
+            const partiels = missions.filter(m => obtenirStatutPaiement(m) === 'orange');
+            const todo = [];
+            if (impayes.length) todo.push({icon:'🔴', title:`${impayes.length} vacation${impayes.length>1?'s':''} impayée${impayes.length>1?'s':''} depuis 30 jours`, detail:`${formatEuro(impayeMontant)} restant à percevoir`, action:`changerOnglet('notifications')`});
+            if (bulletinsManquants.length) todo.push({icon:'📄', title:`${bulletinsManquants.length} bulletin${bulletinsManquants.length>1?'s':''} manquant${bulletinsManquants.length>1?'s':''}`, detail:`Dernier : ${esc(bulletinsManquants[0].lieu)} · ${fmtJour(bulletinsManquants[0].date)}`, action:`changerOnglet('documents')`});
+            if (partiels.length) todo.push({icon:'🟠', title:`${partiels.length} paiement${partiels.length>1?'s':''} partiel${partiels.length>1?'s':''}`, detail:'Des vacations restent partiellement à encaisser', action:`changerOnglet('recap')`});
+            if (aVenir.length) todo.push({icon:'📅', title:`Prochaine vacation : ${esc(aVenir[0].lieu)}`, detail:`${fmtJour(aVenir[0].date)} · ${aVenir[0].heureDebut}–${aVenir[0].heureFin}`, action:`changerOnglet('planning'); allerAujourdhui();`});
+            const todoEl=document.getElementById('home-todo-list');
+            document.getElementById('home-todo-count').innerText=todo.length;
+            todoEl.innerHTML=todo.length ? todo.map(t=>`<button onclick="${t.action}" class="home-action w-full flex items-center gap-3 text-left py-3"><span class="text-xl">${t.icon}</span><span class="min-w-0 flex-1"><span class="block font-bold text-sm text-gray-800">${t.title}</span><span class="block text-[11px] text-gray-500 mt-0.5 truncate">${t.detail}</span></span><span class="text-gray-300 text-lg">›</span></button>`).join('') : `<div class="text-center py-5 text-sm text-green-600 font-semibold">✅ Rien d'urgent. Tout semble à jour.</div>`;
+            document.getElementById('home-impayes-montant').innerText=formatEuro(impayeMontant);
+            document.getElementById('home-impayes-detail').innerText=impayes.length ? `${impayes.length} vacation${impayes.length>1?'s':''} · +30 jours` : 'Tout est à jour';
+            document.getElementById('home-bulletins').innerText=bulletinsManquants.length;
+            document.getElementById('home-bulletins-detail').innerText=bulletinsManquants.length ? 'À récupérer' : 'Tous reçus';
+            document.getElementById('home-today-label').innerText=fmtJour(auj);
+            const todayEl=document.getElementById('home-today-list');
+            todayEl.innerHTML=aujourdHui.length ? aujourdHui.map(m=>`<button onclick="changerOnglet('planning'); allerAujourdhui();" class="home-action w-full flex items-center gap-3 text-left py-3"><span class="w-12 text-center font-extrabold text-blue-600">${m.heureDebut}</span><span class="min-w-0 flex-1"><span class="block font-bold text-sm text-gray-800 truncate">${esc(m.lieu)}</span><span class="block text-[11px] text-gray-500 mt-0.5">${calculerHeuresMission(m).toFixed(1)} h · ${formatEuro(calculerMontantMission(m))}</span></span><span class="text-gray-300">›</span></button>`).join('') : `<div class="text-center py-5 text-sm text-gray-400">Aucune vacation aujourd'hui.</div>`;
+            const weekHours=dansSemaine.reduce((s,m)=>s+calculerHeuresMission(m),0), weekAmount=dansSemaine.reduce((s,m)=>s+calculerMontantMission(m),0);
+            document.getElementById('home-week-missions').innerText=dansSemaine.length;
+            document.getElementById('home-week-hours').innerText=`${weekHours.toFixed(1)} h`;
+            document.getElementById('home-week-amount').innerText=formatEuro(weekAmount);
+            const weekEl=document.getElementById('home-week-list');
+            weekEl.innerHTML=dansSemaine.length ? dansSemaine.map(m=>`<button onclick="changerOnglet('planning'); allerAujourdhui();" class="w-full flex items-center gap-3 py-2.5 border-b border-gray-100 last:border-0 text-left"><span class="w-11 text-xs font-bold text-gray-500">${fmtJour(m.date).slice(0,5)}</span><span class="min-w-0 flex-1"><span class="block text-sm font-bold text-gray-800 truncate">${esc(m.lieu)}</span><span class="block text-[10px] text-gray-500">${m.heureDebut}–${m.heureFin} · ${calculerHeuresMission(m).toFixed(1)} h</span></span><span class="text-xs font-bold text-blue-600">${formatEuro(calculerMontantMission(m))}</span></button>`).join('') : `<div class="text-center py-4 text-sm text-gray-400">Aucune vacation cette semaine.</div>`;
+            const resteGlobal=missions.reduce((s,m)=>s+obtenirResteMission(m),0);
+            document.getElementById('home-payment-summary').innerText=`${formatEuro(resteGlobal)} restant à encaisser`;
+            document.getElementById('home-sous-titre').innerText = todo.length ? `${todo.length} point${todo.length>1?'s':''} mérite${todo.length>1?'nt':''} votre attention.` : 'Votre planning est à jour.';
+        }
+
+        function ouvrirAccueilAlerte(type) {
+            if(type==='impayes') changerOnglet('notifications');
+            else if(type==='bulletins') changerOnglet('documents');
+        }
+
         function changerOnglet(nom) {
             ongletActif = nom;
-            ['pilotage', 'planning', 'recap', 'documents', 'notifications', 'parametres'].forEach(o => {
+            ['accueil', 'pilotage', 'planning', 'recap', 'documents', 'notifications', 'parametres'].forEach(o => {
                 let el = document.getElementById('contenu-' + o);
                 if (el) el.classList.toggle('hidden', o !== nom);
                 let btn = document.getElementById('tab-' + o);
@@ -1855,7 +1979,8 @@
                 if (mBtn) mBtn.className = o === nom ? "flex-1 flex flex-col items-center text-blue-600 font-semibold text-[11px] space-y-1 relative" : "flex-1 flex flex-col items-center text-gray-400 font-medium text-[11px] space-y-1 relative";
             });
             window.scrollTo(0, 0);
-            if (nom === 'pilotage') { genererPilotage(); }
+            if (nom === 'accueil') { genererAccueil(); }
+            else if (nom === 'pilotage') { genererPilotage(); }
             else if (nom === 'documents') { initialiserDatesExportParDefaut(); peuplerSelectAuditEtablissements(); genererDossiersArchives(); }
             else if (nom === 'parametres') { genererListeVehicules(); genererListeEtablissements(); }
             mettreAJourApplication();
@@ -2512,16 +2637,22 @@
             }
 
             if (typeVue === 'semaine') timelineMob.innerHTML = genererListeSemaines(missionsFiltrees);
+            if (ongletActif === 'accueil') genererAccueil();
             if (ongletActif === 'documents') genererDossiersArchives();
             genererRecapMensuel();
             verifierNotificationsAlertes();
             majBarreSelection();
         }
 
+        // PWA : installation hors navigateur après première visite HTTPS
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(e => console.warn('PWA:', e)));
+        }
+
         // Lancement au démarrage
         document.addEventListener("DOMContentLoaded", () => {
             majBoutonsBrutNet();
-            mettreAJourApplication();
+            changerOnglet('accueil');
         });
     </script>
 </body>
