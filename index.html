@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivi Vacations — V3 Pilotage</title>
+    <title>Suivi Vacations — V7 Mobile</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Firebase SDK Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -2493,7 +2493,7 @@
                 }
             }
 
-            timelineMob.innerHTML = genererListeSemaines(missionsFiltrees);
+            if (typeVue === 'semaine') timelineMob.innerHTML = genererListeSemaines(missionsFiltrees);
             if (ongletActif === 'documents') genererDossiersArchives();
             genererRecapMensuel();
             verifierNotificationsAlertes();
