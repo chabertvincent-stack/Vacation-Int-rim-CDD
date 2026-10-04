@@ -1958,8 +1958,24 @@
             document.getElementById('home-week-amount').innerText=formatEuro(weekAmount);
             const weekEl=document.getElementById('home-week-list');
             weekEl.innerHTML=dansSemaine.length ? dansSemaine.map(m=>`<button onclick="changerOnglet('planning'); allerAujourdhui();" class="w-full flex items-center gap-3 py-2.5 border-b border-gray-100 last:border-0 text-left"><span class="w-11 text-xs font-bold text-gray-500">${fmtJour(m.date).slice(0,5)}</span><span class="min-w-0 flex-1"><span class="block text-sm font-bold text-gray-800 truncate">${esc(m.lieu)}</span><span class="block text-[10px] text-gray-500">${m.heureDebut}–${m.heureFin} · ${calculerHeuresMission(m).toFixed(1)} h</span></span><span class="text-xs font-bold text-blue-600">${formatEuro(calculerMontantMission(m))}</span></button>`).join('') : `<div class="text-center py-4 text-sm text-gray-400">Aucune vacation cette semaine.</div>`;
-            const resteGlobal=missions.reduce((s,m)=>s+obtenirResteMission(m),0);
-            document.getElementById('home-payment-summary').innerText=`${formatEuro(resteGlobal)} restant à encaisser`;
+            // Même calcul que la zone « Reste à percevoir » du Planning/Récap
+            // : on utilise la période actuellement affichée (mois courant),
+            // la même base brut/net et la même logique de paiements.
+            const aujDate = new Date(auj + 'T00:00:00');
+            const anneeAccueil = aujDate.getFullYear();
+            const moisAccueil = aujDate.getMonth() + 1;
+            const missionsMoisAccueil = missions.filter(m => {
+                const [a, mm] = (m.date || '').split('-').map(Number);
+                return a === anneeAccueil && mm === moisAccueil;
+            });
+            const montantAccueil = missionsMoisAccueil.reduce((s,m)=>s+valeurAff(m),0);
+            const percuAccueil = missionsMoisAccueil.reduce((s,m)=>s+partPercue(m),0);
+            const resteAccueilMois = Math.max(0, montantAccueil - percuAccueil);
+            // Accueil : reste à percevoir TOTAL, toutes périodes confondues.
+            const montantTotalAccueil = missions.reduce((s,m)=>s+valeurAff(m),0);
+            const percuTotalAccueil = missions.reduce((s,m)=>s+partPercue(m),0);
+            const resteTotalAccueil = Math.max(0, montantTotalAccueil - percuTotalAccueil);
+            document.getElementById('home-payment-summary').innerText=`${formatEuro(resteTotalAccueil)} restant à percevoir`;
             document.getElementById('home-sous-titre').innerText = todo.length ? `${todo.length} point${todo.length>1?'s':''} mérite${todo.length>1?'nt':''} votre attention.` : 'Votre planning est à jour.';
         }
 
