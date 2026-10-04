@@ -1494,6 +1494,24 @@
         function montantTheorique(m) { return calculerMontantMission({ ...m, montantReel: null }); }
         function valeurAff(m) { const v = calculerMontantMission(m); return modeAffichageBrut ? v : Math.max(0, v - calculerCoutCarburantMission(m)); }
         function partPercue(m) { const v = valeurAff(m); return m.statut === 'green' ? v : (m.statut === 'orange' ? v / 2 : 0); }
+        function obtenirMontantPaye(m) {
+            const reel = Number(m?.montantReel);
+            if (Number.isFinite(reel) && reel >= 0 && m?.statut === 'green') return reel;
+            const v = valeurAff(m);
+            if (m?.statut === 'green') return v;
+            if (m?.statut === 'orange') return v / 2;
+            return 0;
+        }
+        function obtenirResteMission(m) {
+            return Math.max(0, valeurAff(m) - obtenirMontantPaye(m));
+        }
+        function obtenirStatutPaiement(m) {
+            const total = valeurAff(m);
+            const paye = obtenirMontantPaye(m);
+            if (total > 0 && paye >= total - 0.01) return 'green';
+            if (paye > 0) return 'orange';
+            return 'blue';
+        }
         function trouverEtab(lieu) { const l = (lieu || '').toLowerCase(); return etablissements.find(e => e.nom.toLowerCase() === l || (e.alias || '').toLowerCase().split(',').some(a => a.trim() && a.trim() === l)); }
 
         function majBoutonsBrutNet() { document.querySelectorAll('.btn-brut-net').forEach(b => { b.textContent = modeAffichageBrut ? 'Affichage : Brut' : 'Affichage : Net (carburant déduit)'; }); }
