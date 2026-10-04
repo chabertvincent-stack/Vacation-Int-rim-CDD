@@ -1468,9 +1468,7 @@
         }
 
         function calculerMontantMission(m) {
-            // Montant dû théorique de la vacation.
-            // IMPORTANT : montantReel représente ce qui a réellement été encaissé,
-            // il ne doit jamais remplacer le montant dû dans les totaux ou graphiques.
+            if (m.montantReel !== null && m.montantReel !== undefined && m.montantReel !== '' && parseFloat(m.montantReel) > 0) return parseFloat(m.montantReel);
             let [hD, mD] = (m.heureDebut || '07:00').split(':').map(Number);
             let [hF, mF] = (m.heureFin || '17:00').split(':').map(Number);
             let mDebut = hD * 60 + mD, mFin = hF * 60 + mF;
@@ -1535,7 +1533,7 @@
             const ms = missions.filter(m => (m.date||'').startsWith(String(annee)));
             const fs = frais.filter(f => (f.date||'').startsWith(String(annee)));
             const ca = ms.reduce((s,m)=>s+calculerMontantMission(m),0);
-            const percu = ms.reduce((s,m)=>s + obtenirMontantPaye(m),0);
+            const percu = ms.reduce((s,m)=>{ const montant=calculerMontantMission(m); return s + (m.statut==='green'?montant:(m.statut==='orange'?montant/2:0)); },0);
             const km = ms.reduce((s,m)=>s+(Number(m.distance)||0),0);
             const heures = ms.reduce((s,m)=>s+calculerHeuresMission(m),0);
             const fraisTotal = fs.reduce((s,f)=>s+(Number(f.montant)||0),0) + ms.reduce((s,m)=>s+calculerCoutCarburantMission(m),0);
@@ -1572,17 +1570,15 @@
         function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
         function montantTheorique(m) { return calculerMontantMission({ ...m, montantReel: null }); }
         function valeurAff(m) { const v = calculerMontantMission(m); return modeAffichageBrut ? v : Math.max(0, v - calculerCoutCarburantMission(m)); }
+        function partPercue(m) { const v = valeurAff(m); return m.statut === 'green' ? v : (m.statut === 'orange' ? v / 2 : 0); }
         function obtenirMontantPaye(m) {
-            const total = valeurAff(m);
             const reel = Number(m?.montantReel);
-            // Nouveau système : montantReel = montant réellement encaissé.
-            if (Number.isFinite(reel) && reel >= 0) return Math.min(reel, total);
-            // Compatibilité avec les anciennes vacations : orange = paiement partiel de 50 %.
-            if (m?.statut === 'green') return total;
-            if (m?.statut === 'orange') return total / 2;
+            if (Number.isFinite(reel) && reel >= 0 && m?.statut === 'green') return reel;
+            const v = valeurAff(m);
+            if (m?.statut === 'green') return v;
+            if (m?.statut === 'orange') return v / 2;
             return 0;
         }
-        function partPercue(m) { return obtenirMontantPaye(m); }
         function obtenirResteMission(m) {
             return Math.max(0, valeurAff(m) - obtenirMontantPaye(m));
         }
@@ -2445,7 +2441,10 @@
             
             let totalAffichageMontant = modeAffichageBrut ? totalMontantBrutGlobal : Math.max(0, totalMontantBrutGlobal - totalCarburantGlobal);
 
-            let totalPercu = missionsFiltrees.reduce((acc, m) => acc + obtenirMontantPaye(m), 0);
+            let totalPercu = missionsFiltrees.reduce((acc, m) => {
+                let valM = modeAffichageBrut ? calculerMontantMission(m) : Math.max(0, calculerMontantMission(m) - calculerCoutCarburantMission(m));
+                return acc + (m.statut === 'green' ? valM : (m.statut === 'orange' ? valM / 2 : 0));
+            }, 0);
 
             document.getElementById('stat-jours').innerText = totalJours;
             document.getElementById('stat-heures').innerText = `${totalHeures.toFixed(1)} h`;
